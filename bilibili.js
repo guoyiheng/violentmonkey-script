@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 纯色关灯模式
 // @namespace    https://github.com/local-userscripts
-// @version      1.1.0
+// @version      1.1.1
 // @description  只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白。
 // @author       Codex
 // @match        https://www.bilibili.com/video/*
@@ -60,6 +60,10 @@
 
     html.${ACTIVE_CLASS} #${ROOT_ID} {
       display: block;
+    }
+
+    html.${ACTIVE_CLASS} .plp-player .bpx-player-sending-area {
+      display: none !important;
     }
 
     #${ROOT_ID} > .bili-lights-off-panel {
