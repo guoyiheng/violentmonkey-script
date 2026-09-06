@@ -32,9 +32,10 @@ violentmonkey-script/
 │   ├── baidu-pan.user.js                # 网盘自动转存脚本
 │   ├── db-vr.user.js                    # DB VR 筛选脚本
 │   └── youpu.user.js                    # 有谱伴奏助手脚本
+├── tools/                                # 服务端/NAS 辅助自动化工具
+│   └── qb-auto-filter/                  # qBittorrent 自动过滤仅下载 MP4 工具 (Python 零依赖)
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束
-├── TODO.md                               # 任务进展跟踪
 └── .gitignore                            # Git 忽略文件
 ```
 
