@@ -1,12 +1,15 @@
 // ==UserScript==
 // @name         Jellyfin with Potplayer
-// @version      0.1
+// @namespace    https://github.com/guoyiheng/violentmonkey-script
+// @version      0.1.1
 // @description  play video with Potplayer
 // @author       Tccoin
 // @match        http://localhost:8096/*
 // @match        http://192.168.31.155:8096/*
 // @match        https://xxn.synology.me:7788/*
 // @match        https://jf.yiheng.run/*
+// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js
+// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js
 // ==/UserScript==
 ;(function () {
   'use strict'

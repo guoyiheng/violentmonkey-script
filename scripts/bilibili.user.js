@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         Bilibili 纯色关灯模式
-// @namespace    https://github.com/local-userscripts
+// @namespace    https://github.com/guoyiheng/violentmonkey-script
 // @version      1.1.1
 // @description  只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白。
 // @author       Codex
 // @match        https://www.bilibili.com/video/*
 // @match        https://www.bilibili.com/list/*
 // @match        https://www.bilibili.com/bangumi/play/*
+// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js
+// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==

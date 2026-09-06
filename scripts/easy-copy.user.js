@@ -6,8 +6,8 @@
 // @author       guoyiheng
 // @match        http://*/*
 // @match        https://*/*
-// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/easy-copy.js
-// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/easy-copy.js
+// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js
+// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_addValueChangeListener
