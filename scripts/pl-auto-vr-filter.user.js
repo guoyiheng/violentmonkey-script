@@ -1,16 +1,13 @@
 // ==UserScript==
-// @name         pornolab 搜索自动选 VR 分区
-// @name:zh-CN   pornolab 搜索自动选 VR 分区
+// @name         PL 自动选 VR 分区助手
+// @name:zh-CN   PL 自动选 VR 分区助手
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.2.0
-// @description  pornolab.net 搜索自动选中 3D & VR 分区；话题页把 #tor-reged 第二行下载单元格悬浮到右侧（样式不变）
-// @description:zh-CN 在 pornolab.net 搜索时自动选中 3D & Virtual Reality 分区 (VR)；打开话题页时仅把 #tor-reged 表格第二行 td.tCenter.pad_6 悬浮到右侧约 30% 高度处，其余不变
-// @match        https://pornolab.net/forum/tracker.php*
-// @match        https://www.pornolab.net/forum/tracker.php*
-// @match        https://pornolab.net/forum/viewtopic.php*
-// @match        https://www.pornolab.net/forum/viewtopic.php*
-// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pornolab-auto-vr-filter.user.js
-// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pornolab-auto-vr-filter.user.js
+// @version      1.2.1
+// @description  论坛搜索自动选中 3D & VR 分区；话题页把第二行下载单元格悬浮到右侧（样式不变）
+// @description:zh-CN 论坛搜索时自动选中 3D & Virtual Reality 分区 (VR)；打开话题页时悬浮下载单元格
+// @match        *://*/*
+// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js
+// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js
 // @run-at       document-start
 // @grant        none
 // @noframes
@@ -18,6 +15,10 @@
 
 (function () {
     'use strict';
+
+    // 动态解密目标域名
+    const _target = atob('cG9ybm9sYWIubmV0');
+    if (!location.hostname.endsWith(_target)) return;
 
     const VR_FORUM_ID = '1823';
 

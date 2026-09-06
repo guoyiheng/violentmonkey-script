@@ -13,7 +13,7 @@
 | **Easy Copy & qBittorrent 推送** | 磁力链接自动拦截收集、去重、推送到 NAS qBittorrent (默认 magnet 分类、上传限速 1KB/s)、成功/重复任务自动删除 | `v2.2.0` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
 | **Bilibili 纯色关灯模式** | 只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白 | `v1.1.1` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) |
 | **Jellyfin with PotPlayer** | 在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频 | `v0.1.1` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) |
-| **Pornolab 自动选 VR 分区** | 搜索时自动选中 3D & VR 分区，话题页悬浮下载单元格 | `v1.2.0` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pornolab-auto-vr-filter.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pornolab-auto-vr-filter.user.js) |
+| **PL 自动选 VR 分区助手** | 论坛搜索时自动选中 3D & VR 分区，话题页悬浮下载单元格 | `v1.2.1` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) |
 
 ---
 
@@ -25,7 +25,7 @@ violentmonkey-script/
 │   ├── easy-copy.user.js                # Easy Copy & qBittorrent 推送脚本
 │   ├── bilibili.user.js                 # Bilibili 关灯模式脚本
 │   ├── potplayer.user.js                # Jellyfin PotPlayer 唤起脚本
-│   └── pornolab-auto-vr-filter.user.js  # Pornolab VR 筛选脚本
+│   └── pl-auto-vr-filter.user.js        # PL 自动选 VR 分区助手脚本
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束
 ├── TODO.md                               # 任务进展跟踪
