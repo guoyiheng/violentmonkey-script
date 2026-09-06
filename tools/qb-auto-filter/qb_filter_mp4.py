@@ -31,6 +31,7 @@ DEFAULT_CONFIG = {
     "password": "adminadmin",               # 密码
     "category": "magnet",                   # 仅处理指定分类（为空字符串 "" 则处理所有分类）
     "allowed_extensions": [".mp4"],         # 允许下载的文件后缀（小写，包含点）
+    "min_size_mb": 25,                      # 最小文件大小限制（MB），小于此大小的文件设为不下载（0 表示不限制）
     "filtered_tag": "mp4-filtered",         # 处理完成后标记的 Tag
     "poll_interval": 5,                     # 守护进程轮询间隔（秒）
     "metadata_timeout": 180,                # 单任务等待元数据最大超时时间（秒）
@@ -147,12 +148,12 @@ class QbittorrentClient:
             return False
 
 
-def filter_torrent(client, torrent, allowed_exts, filtered_tag):
+def filter_torrent(client, torrent, allowed_exts, filtered_tag, min_size_mb=25):
     """
     检查并过滤单个种子的文件列表：
     - 如果是 metaDL 状态（元数据还在下载），暂不处理；
     - 如果已有目标过滤标签，跳过；
-    - 遍历文件：非 allowed_exts 的文件全部设为 priority=0；
+    - 遍历文件：非 allowed_exts 或大小小于 min_size_mb 的文件全部设为 priority=0；
     - 打上 filtered_tag 标签。
     """
     thash = torrent.get("hash")
@@ -168,20 +169,26 @@ def filter_torrent(client, torrent, allowed_exts, filtered_tag):
         # 元数据可能尚未下载完毕 (metaDL)
         return False
 
+    min_size_bytes = min_size_mb * 1024 * 1024 if min_size_mb > 0 else 0
     skip_ids = []
     keep_names = []
     skip_names = []
 
     for idx, f in enumerate(files):
         fname = f.get("name", "")
+        f_size = f.get("size", 0)
         f_ext = os.path.splitext(fname)[1].lower()
         fid = f.get("index", idx)
 
-        if f_ext in allowed_exts:
-            keep_names.append(os.path.basename(fname))
+        is_ext_allowed = f_ext in allowed_exts
+        is_size_ok = (min_size_bytes == 0) or (f_size >= min_size_bytes)
+
+        if is_ext_allowed and is_size_ok:
+            keep_names.append(f"{os.path.basename(fname)} ({f_size / 1024 / 1024:.1f}MB)")
         else:
             skip_ids.append(fid)
-            skip_names.append(os.path.basename(fname))
+            reason = "非MP4" if not is_ext_allowed else f"小于{min_size_mb}MB"
+            skip_names.append(f"{os.path.basename(fname)} ({reason}, {f_size / 1024 / 1024:.1f}MB)")
 
     # 执行屏蔽非目标文件
     if skip_ids:
@@ -203,6 +210,7 @@ def run_once(client, config):
     """单次扫描模式"""
     category = config.get("category")
     allowed_exts = [ext.lower() for ext in config.get("allowed_extensions", [".mp4"])]
+    min_size_mb = config.get("min_size_mb", 25)
     filtered_tag = config.get("filtered_tag", "mp4-filtered")
 
     torrents = client.get_torrents(category=category)
@@ -217,7 +225,7 @@ def run_once(client, config):
         if filtered_tag in tags:
             continue
 
-        if filter_torrent(client, t, allowed_exts, filtered_tag):
+        if filter_torrent(client, t, allowed_exts, filtered_tag, min_size_mb=min_size_mb):
             count += 1
 
     if count > 0:
@@ -227,6 +235,7 @@ def run_once(client, config):
 def run_single_hash(client, config, target_hash):
     """针对单一 Hash 进行等待元数据并过滤（供 qB 外部程序调用）"""
     allowed_exts = [ext.lower() for ext in config.get("allowed_extensions", [".mp4"])]
+    min_size_mb = config.get("min_size_mb", 25)
     filtered_tag = config.get("filtered_tag", "mp4-filtered")
     timeout = config.get("metadata_timeout", 180)
 
@@ -239,7 +248,7 @@ def run_single_hash(client, config, target_hash):
             torrents = client.get_torrents()
             target_t = next((t for t in torrents if t.get("hash", "").lower() == target_hash.lower()), None)
             t_obj = target_t if target_t else {"hash": target_hash, "name": target_hash, "tags": ""}
-            filter_torrent(client, t_obj, allowed_exts, filtered_tag)
+            filter_torrent(client, t_obj, allowed_exts, filtered_tag, min_size_mb=min_size_mb)
             return
 
         time.sleep(2)
@@ -281,6 +290,11 @@ def load_config(config_file_path=None):
         cfg["password"] = os.environ["QB_PASS"]
     if "QB_CATEGORY" in os.environ:
         cfg["category"] = os.environ["QB_CATEGORY"]
+    if "QB_MIN_SIZE_MB" in os.environ:
+        try:
+            cfg["min_size_mb"] = int(os.environ["QB_MIN_SIZE_MB"])
+        except ValueError:
+            pass
 
     return cfg
 
@@ -295,6 +309,7 @@ def main():
     parser.add_argument("--user", help="覆盖 qB 用户名")
     parser.add_argument("--password", help="覆盖 qB 密码")
     parser.add_argument("--category", help="覆盖分类 (默认 magnet)")
+    parser.add_argument("--min-size", type=int, help="覆盖最小文件大小限制(MB，默认 25MB，0 表示不限制大小)")
 
     args = parser.parse_args()
     config = load_config(args.config)
@@ -307,6 +322,8 @@ def main():
         config["password"] = args.password
     if args.category is not None:
         config["category"] = args.category
+    if args.min_size is not None:
+        config["min_size_mb"] = args.min_size
 
     client = QbittorrentClient(
         base_url=config["qb_url"],

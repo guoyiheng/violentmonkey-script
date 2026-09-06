@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.3
+// @version      2.2.4
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.3'
+  const SCRIPT_VERSION = 'v2.2.4'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -1311,7 +1311,7 @@
         <div class="ec-btn-row">
           <button class="ec-btn ec-btn-icon ec-undo-btn" type="button" aria-label="撤销版本" title="撤销至上一个版本">${ICONS.undo}</button>
           <button class="ec-btn ec-btn-icon ec-redo-btn" type="button" aria-label="重做版本" title="恢复至下一个版本">${ICONS.redo}</button>
-          <button class="ec-btn ec-filter-btn" type="button" title="连接 qB 将 magnet 分类中种子的非 MP4 文件设为不下载">
+          <button class="ec-btn ec-filter-btn" type="button" title="连接 qB 将 magnet 分类中非 MP4 或小于 25MB 的文件设为不下载">
             ${ICONS.filter}
             <span>过滤非MP4</span>
           </button>
@@ -1978,38 +1978,43 @@
           continue
         }
 
-        // 找出所有不是 .mp4 且当前 priority != 0 的文件
-        const nonMp4Ids = []
+        // 过滤规则：
+        // 1. 扩展名不是 .mp4；
+        // 2. 或者是 .mp4 但文件大小小于 25MB (25 * 1024 * 1024 字节)
+        const MIN_MP4_SIZE_BYTES = 25 * 1024 * 1024
+        const skipIds = []
         for (let idx = 0; idx < files.length; idx++) {
           const f = files[idx]
           const fid = f.index !== undefined ? f.index : idx
-          const fname = (f.name || '').trim()
-          if (!fname.toLowerCase().endsWith('.mp4')) {
-            if (f.priority !== 0) {
-              nonMp4Ids.push(fid)
-            }
+          const fname = (f.name || '').trim().toLowerCase()
+          const fsize = typeof f.size === 'number' ? f.size : Number(f.size) || 0
+          const isMp4 = fname.endsWith('.mp4')
+          const isTarget = isMp4 && fsize >= MIN_MP4_SIZE_BYTES
+
+          if (!isTarget && f.priority !== 0) {
+            skipIds.push(fid)
           }
         }
 
-        if (nonMp4Ids.length > 0) {
-          const data = `hash=${encodeURIComponent(hash.toLowerCase())}&id=${encodeURIComponent(nonMp4Ids.join('|'))}&priority=0`
+        if (skipIds.length > 0) {
+          const data = `hash=${encodeURIComponent(hash.toLowerCase())}&id=${encodeURIComponent(skipIds.join('|'))}&priority=0`
           await qbRequest('/api/v2/torrents/filePrio', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             data: data,
           })
           processedCount++
-          ignoredFilesCount += nonMp4Ids.length
+          ignoredFilesCount += skipIds.length
         }
       }
 
       // 反馈结果
       if (ignoredFilesCount > 0) {
-        let msg = `已处理 ${processedCount} 个任务，将 ${ignoredFilesCount} 个非 MP4 文件设为不下载 ✓`
+        let msg = `已处理 ${processedCount} 个任务，将 ${ignoredFilesCount} 个非 MP4 / 小于 25MB 文件设为不下载 ✓`
         if (pendingMetaCount > 0) {
           msg += `（另有 ${pendingMetaCount} 个任务元数据尚在拉取）`
         }
-        showCenterToast('MP4 过滤完成', msg, 'success', 3500)
+        showCenterToast('文件过滤完成', msg, 'success', 3500)
       } else if (pendingMetaCount > 0 && processedCount === 0) {
         showCenterToast(
           '种子元数据尚未就绪',
@@ -2020,13 +2025,13 @@
       } else {
         showCenterToast(
           '检查完成',
-          `[${category}] 分类的 ${torrents.length} 个任务中无待过滤的非 MP4 文件 ✓`,
+          `[${category}] 分类的 ${torrents.length} 个任务中无待过滤的非 MP4 / 小于 25MB 文件 ✓`,
           'info',
           2500,
         )
       }
     } catch (err) {
-      showCenterToast('过滤非 MP4 失败', err.message || '网络连接异常', 'danger', 4000)
+      showCenterToast('过滤文件失败', err.message || '网络连接异常', 'danger', 4000)
     } finally {
       qbBusy = false
       filterBtn.innerHTML = origHtml

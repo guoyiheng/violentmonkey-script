@@ -28,6 +28,7 @@
   "password": "your_password",
   "category": "magnet",
   "allowed_extensions": [".mp4"],
+  "min_size_mb": 25,
   "filtered_tag": "mp4-filtered",
   "poll_interval": 5,
   "metadata_timeout": 180
@@ -35,7 +36,8 @@
 ```
 
 * `category`：仅处理推送到此分类的任务（配合「磁力快推」默认的 `magnet` 分类，避免影响其他正常做种分类；如需对所有任务生效可留空 `""`）；
-* `allowed_extensions`：允许下载的扩展名列表，默认 `[".mp4"]`，如有需要也可以加 `[".mp4", ".mkv"]`。
+* `allowed_extensions`：允许下载的扩展名列表，默认 `[".mp4"]`，如有需要也可以加 `[".mp4", ".mkv"]`；
+* `min_size_mb`：最小文件大小限制（MB），默认 `25`。非目标扩展名或小于此大小的文件（如 sample 预览小片段、广告等）均会被设为「不下载」，设为 `0` 则不限制大小。
 
 ---
 
