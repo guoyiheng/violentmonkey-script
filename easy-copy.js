@@ -78,16 +78,16 @@
     username: '',
     password: '',
     savepath: '',
-    category: '',
+    category: 'magnet',
     autoSend: false,
   }
 
   // 兼容读取之前 qbittorrent.user.js 的配置
-  let qbSettings = Object.assign(
-    {},
-    DEFAULT_QB_SETTINGS,
-    loadJSON(QB_SETTINGS_KEY, null) || loadJSON('qb_magnet_settings_v1', null) || {},
-  )
+  const savedQbSettings = loadJSON(QB_SETTINGS_KEY, null) || loadJSON('qb_magnet_settings_v1', null) || {}
+  let qbSettings = Object.assign({}, DEFAULT_QB_SETTINGS, savedQbSettings)
+  if (!qbSettings.category || !qbSettings.category.trim()) {
+    qbSettings.category = DEFAULT_QB_SETTINGS.category
+  }
 
   let cachedSid = loadJSON(QB_SID_KEY, '') || ''
   let qbBusy = false
@@ -1315,8 +1315,8 @@
             <input id="ec-qb-path" class="ec-input" type="text" placeholder="留空使用 qB 默认" spellcheck="false" />
           </div>
           <div class="ec-form-group" style="flex:1;">
-            <label class="ec-form-label" for="ec-qb-cat">分类 Category (可选)</label>
-            <input id="ec-qb-cat" class="ec-input" type="text" placeholder="留空不指定" spellcheck="false" />
+            <label class="ec-form-label" for="ec-qb-cat">分类 Category (默认: magnet)</label>
+            <input id="ec-qb-cat" class="ec-input" type="text" placeholder="magnet" spellcheck="false" />
           </div>
         </div>
         <label class="ec-checkbox-row">
@@ -1548,7 +1548,7 @@
     qbSettings.username = (qbUserInput.value && qbUserInput.value.trim()) || ''
     qbSettings.password = qbPwdInput.value || ''
     qbSettings.savepath = (qbPathInput.value && qbPathInput.value.trim()) || ''
-    qbSettings.category = (qbCatInput.value && qbCatInput.value.trim()) || ''
+    qbSettings.category = (qbCatInput.value && qbCatInput.value.trim()) || DEFAULT_QB_SETTINGS.category
     qbSettings.autoSend = !!qbAutoSendCheckbox.checked
     saveJSON(QB_SETTINGS_KEY, qbSettings)
   }
