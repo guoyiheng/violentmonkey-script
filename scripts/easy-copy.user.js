@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.1
+// @version      2.2.2
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.1'
+  const SCRIPT_VERSION = 'v2.2.2'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -707,6 +707,19 @@
   flex: 0 0 auto;
 }
 
+.ec-filter-btn {
+  flex: 0 0 auto;
+  padding: 0 9px;
+  font-size: 11.5px;
+  gap: 4px;
+}
+
+.ec-filter-btn:hover:not(:disabled) {
+  color: #0f766e;
+  border-color: #0f766e;
+  background: rgba(15, 118, 110, 0.06);
+}
+
 .ec-btn-primary {
   flex: 1;
   background: var(--ec-ink);
@@ -882,6 +895,11 @@
   .ec-input:hover {
     border-color: #5b6960;
   }
+  .ec-filter-btn:hover:not(:disabled) {
+    color: #8dd4e3;
+    border-color: #8dd4e3;
+    background: rgba(141, 212, 227, 0.12);
+  }
   .ec-btn-primary {
     background: #3c4942;
     color: #f3f7f4;
@@ -935,6 +953,7 @@
     undo: `<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 6.4h6.4a3.6 3.6 0 0 1 0 7.2H6"/><path d="M5.8 3.6 3 6.4l2.8 2.8"/></svg>`,
     redo: `<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 6.4H6.4a3.6 3.6 0 0 0 0 7.2H10"/><path d="M10.2 3.6 13 6.4l-2.8 2.8"/></svg>`,
     pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17z"/></svg>`,
+    filter: `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>`,
     check: `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 8.5l3.2 3.2 6.4-6.4"/></svg>`,
     info: `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r="0.5" fill="currentColor"/></svg>`,
   }
@@ -1284,9 +1303,13 @@
         <div class="ec-btn-row">
           <button class="ec-btn ec-btn-icon ec-undo-btn" type="button" aria-label="撤销版本" title="撤销至上一个版本">${ICONS.undo}</button>
           <button class="ec-btn ec-btn-icon ec-redo-btn" type="button" aria-label="重做版本" title="恢复至下一个版本">${ICONS.redo}</button>
-          <button class="ec-btn ec-btn-primary ec-push-all-btn" type="button">
+          <button class="ec-btn ec-filter-btn" type="button" title="连接 qB 将 magnet 分类中种子的非 MP4 文件设为不下载">
+            ${ICONS.filter}
+            <span>过滤非MP4</span>
+          </button>
+          <button class="ec-btn ec-btn-primary ec-push-all-btn" type="button" title="将框中所有磁力推送到 NAS qBittorrent">
             ${ICONS.rocket}
-            <span>推送至 qBittorrent</span>
+            <span>推送至 qB</span>
           </button>
         </div>
       </div>
@@ -1354,6 +1377,7 @@
   const textarea = root.querySelector('.ec-textarea')
   const undoBtn = root.querySelector('.ec-undo-btn')
   const redoBtn = root.querySelector('.ec-redo-btn')
+  const filterBtn = root.querySelector('.ec-filter-btn')
   const pushBtn = root.querySelector('.ec-push-all-btn')
 
   const qbUrlInput = root.querySelector('#ec-qb-url')
@@ -1655,7 +1679,8 @@
   const updateActionButtons = () => {
     setDisabled(undoBtn, history.length === 0)
     setDisabled(redoBtn, future.length === 0)
-    setDisabled(pushBtn, items.length === 0)
+    setDisabled(pushBtn, items.length === 0 || qbBusy)
+    setDisabled(filterBtn, qbBusy)
   }
 
   const updateBadge = () => {
@@ -1874,6 +1899,130 @@
       showCenterToast('推送至 qBittorrent 发生异常', err.message || '未知异常', 'danger', 4500)
     } finally {
       qbBusy = false
+      updateActionButtons()
+    }
+  }
+
+  // ---------- 过滤 qBittorrent 中指定分类的任务，仅下载 MP4 文件 ----------
+  const triggerFilterMp4 = async () => {
+    if (qbBusy) return
+    qbBusy = true
+    updateActionButtons()
+
+    const origHtml = filterBtn.innerHTML
+    filterBtn.innerHTML = `<span>过滤中…</span>`
+
+    const category = (qbSettings.category || 'magnet').trim() || 'magnet'
+    showCenterToast(
+      '正在过滤任务内容...',
+      `连接 qB 检索 [${category}] 分类下的种子任务...`,
+      'info',
+      2000,
+    )
+
+    try {
+      // 1. 请求指定 category 的种子列表
+      const queryTorrents = async () => {
+        const path = `/api/v2/torrents/info?category=${encodeURIComponent(category)}`
+        return await qbRequest(path)
+      }
+
+      let res
+      try {
+        res = await queryTorrents()
+        if (res.status === 403 || res.status === 401) {
+          await qbLogin()
+          res = await queryTorrents()
+        }
+      } catch (connErr) {
+        showCenterToast('无法连接 qBittorrent', connErr.message || '请检查网络或 NAS 地址配置', 'danger', 3800)
+        return
+      }
+
+      if (res.status !== 200) {
+        throw new Error(`获取任务列表异常 (HTTP ${res.status}): ${(res.responseText || '').slice(0, 80)}`)
+      }
+
+      const torrents = JSON.parse(res.responseText || '[]')
+      if (!Array.isArray(torrents) || torrents.length === 0) {
+        showCenterToast('无需处理', `qB 中 [${category}] 分类下暂无任务`, 'info', 2500)
+        return
+      }
+
+      let processedCount = 0
+      let ignoredFilesCount = 0
+      let pendingMetaCount = 0
+
+      for (const t of torrents) {
+        const hash = t.hash
+        if (!hash) continue
+
+        let fileRes = await qbRequest(`/api/v2/torrents/files?hash=${encodeURIComponent(hash)}`)
+        if (fileRes.status === 403 || fileRes.status === 401) {
+          await qbLogin()
+          fileRes = await qbRequest(`/api/v2/torrents/files?hash=${encodeURIComponent(hash)}`)
+        }
+
+        const files = JSON.parse(fileRes.responseText || '[]')
+        if (!Array.isArray(files) || files.length === 0) {
+          // 该任务元数据尚在拉取 (metaDL)
+          pendingMetaCount++
+          continue
+        }
+
+        // 找出所有不是 .mp4 且当前 priority != 0 的文件
+        const nonMp4Ids = []
+        for (let idx = 0; idx < files.length; idx++) {
+          const f = files[idx]
+          const fid = f.index !== undefined ? f.index : idx
+          const fname = (f.name || '').trim()
+          if (!fname.toLowerCase().endsWith('.mp4')) {
+            if (f.priority !== 0) {
+              nonMp4Ids.push(fid)
+            }
+          }
+        }
+
+        if (nonMp4Ids.length > 0) {
+          const data = `hash=${encodeURIComponent(hash.toLowerCase())}&id=${encodeURIComponent(nonMp4Ids.join('|'))}&priority=0`
+          await qbRequest('/api/v2/torrents/filePrio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: data,
+          })
+          processedCount++
+          ignoredFilesCount += nonMp4Ids.length
+        }
+      }
+
+      // 反馈结果
+      if (ignoredFilesCount > 0) {
+        let msg = `已处理 ${processedCount} 个任务，将 ${ignoredFilesCount} 个非 MP4 文件设为不下载 ✓`
+        if (pendingMetaCount > 0) {
+          msg += `（另有 ${pendingMetaCount} 个任务元数据尚在拉取）`
+        }
+        showCenterToast('MP4 过滤完成', msg, 'success', 3500)
+      } else if (pendingMetaCount > 0 && processedCount === 0) {
+        showCenterToast(
+          '种子元数据尚未就绪',
+          `当前 ${pendingMetaCount} 个任务仍在拉取元数据，请稍候片刻再点击过滤`,
+          'warning',
+          3500,
+        )
+      } else {
+        showCenterToast(
+          '检查完成',
+          `[${category}] 分类的 ${torrents.length} 个任务中无待过滤的非 MP4 文件 ✓`,
+          'info',
+          2500,
+        )
+      }
+    } catch (err) {
+      showCenterToast('过滤非 MP4 失败', err.message || '网络连接异常', 'danger', 4000)
+    } finally {
+      qbBusy = false
+      filterBtn.innerHTML = origHtml
+      updateActionButtons()
     }
   }
 
@@ -2059,6 +2208,11 @@
     showCenterToast('已恢复至下一版本', `当前共 ${items.length} 条磁力`, 'info', 1500)
   })
 
+  filterBtn.addEventListener('click', (e) => {
+    e.stopPropagation()
+    triggerFilterMp4()
+  })
+
   pushBtn.addEventListener('click', (e) => {
     e.stopPropagation()
     triggerPushAll()
@@ -2078,6 +2232,7 @@
   if (typeof GM_registerMenuCommand === 'function') {
     GM_registerMenuCommand('展开/收起已收集磁力页面', () => setPanelOpen(!isPanelOpen()))
     GM_registerMenuCommand('推送磁力至 NAS qBittorrent', triggerPushAll)
+    GM_registerMenuCommand('过滤 qB magnet 任务为仅下载 MP4', triggerFilterMp4)
     GM_registerMenuCommand('打开 qBittorrent NAS 设置', () => setPanelOpen(true, true))
   }
 
