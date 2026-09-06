@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name         Easy Copy & qBittorrent 推送
+// @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
 // @version      2.2.0
-// @description  边缘吸附可折叠面板，自动拦截并汇总复制的磁力链接、去重、一键推送 NAS qBittorrent、跨标签页同步、记住位置
-// @author       guoyiheng
+// @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
+// @author       yiheng
+// @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnTWFnbmV0IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFmN2Q5NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZjQ0NTMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8ZmlsdGVyIGlkPSJiYWRnZVNoYWRvdyIgeD0iLTIwJSIgeT0iLTIwJSIgd2lkdGg9IjE0MCUiIGhlaWdodD0iMTQwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSIyIiBzdGREZXZpYXRpb249IjMiIGZsb29kLW9wYWNpdHk9IjAuMyIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByeD0iMjgiIGZpbGw9InVybCgjYmdNYWduZXQpIi8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYsIDIyKSBzY2FsZSgzLjIpIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMi42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgPHBhdGggZD0iTTQgNHY3YTggOCAwIDAgMCAxNiAwVjQiLz4KICAgIDxsaW5lIHgxPSI0IiB5MT0iOCIgeDI9IjgiIHkyPSI4IiBzdHJva2U9IiNlZjQ0NDQiIHN0cm9rZS13aWR0aD0iMi44Ii8+CiAgICA8bGluZSB4MT0iMTYiIHkxPSI4IiB4Mj0iMjAiIHkyPSI4IiBzdHJva2U9IiMzOGJkZjgiIHN0cm9rZS13aWR0aD0iMi44Ii8+CiAgPC9nPgogIAogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgyLCA4MikiPgogICAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjEiIGZpbGw9IiNmZmZmZmYiIGZpbHRlcj0idXJsKCNiYWRnZVNoYWRvdykiLz4KICAgIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjE3IiBmaWxsPSIjMWY3ZDk2Ii8+CiAgICA8dGV4dCB4PSIyMCIgeT0iMjciIGZvbnQtZmFtaWx5PSItYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQsICJTZWdvZSBVSSIsIFJvYm90bywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RTwvdGV4dD4KICA8L2c+Cjwvc3ZnPg==
 // @match        http://*/*
 // @match        https://*/*
 // @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js
@@ -1255,11 +1256,11 @@
     </div>
 
     <!-- 浮动操作面板 -->
-    <section class="ec-panel" aria-label="Easy Copy 面板" aria-hidden="true">
+    <section class="ec-panel" aria-label="磁力快推面板" aria-hidden="true">
       <header class="ec-panel-header">
         <div class="ec-header-title-wrap">
           <div class="ec-kicker-row">
-            <span class="ec-kicker">EASY COPY & QBITTORRENT</span>
+            <span class="ec-kicker">MAGNET PUSH</span>
             <span class="ec-version-badge">${SCRIPT_VERSION}</span>
           </div>
           <h2 class="ec-panel-title">已收集磁力</h2>
