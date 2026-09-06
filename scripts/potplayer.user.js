@@ -4,7 +4,7 @@
 // @version      0.1.1
 // @description  在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频
 // @author       yiheng
-// @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnUG90IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzkzMzNlYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMjg0YzciLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8ZmlsdGVyIGlkPSJiYWRnZVNoYWRvdyIgeD0iLTIwJSIgeT0iLTIwJSIgd2lkdGg9IjE0MCUiIGhlaWdodD0iMTQwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSIyIiBzdGREZXZpYXRpb249IjMiIGZsb29kLW9wYWNpdHk9IjAuMyIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByeD0iMjgiIGZpbGw9InVybCgjYmdQb3QpIi8+CiAgPHBvbHlnb24gcG9pbnRzPSI0NiwzNCA5NCw2NCA0Niw5NCIgZmlsbD0iI2ZiYmYyNCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAKICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4MiwgODIpIj4KICAgIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjIxIiBmaWxsPSIjZmZmZmZmIiBmaWx0ZXI9InVybCgjYmFkZ2VTaGFkb3cpIi8+CiAgICA8Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxNyIgZmlsbD0iIzkzMzNlYSIvPgogICAgPHRleHQgeD0iMjAiIHk9IjI3IiBmb250LWZhbWlseT0iLWFwcGxlLXN5c3RlbSwgQmxpbmtNYWNTeXN0ZW1Gb250LCAiU2Vnb2UgVUkiLCBSb2JvdG8sIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkU8L3RleHQ+CiAgPC9nPgo8L3N2Zz4=
+// @icon         https://api.iconify.design/simple-icons:jellyfin.svg?color=%23aa5cc3
 // @match        http://localhost:8096/*
 // @match        http://192.168.31.155:8096/*
 // @match        https://xxn.synology.me:7788/*

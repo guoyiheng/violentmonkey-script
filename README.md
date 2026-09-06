@@ -1,6 +1,6 @@
 # Violentmonkey Scripts (暴力猴脚本集合)
 
-自用的高质量 Violentmonkey / Tampermonkey 用户脚本集合。所有脚本作者统一为 `yiheng`，图标均内置「E」角标身份标识，所有脚本均配置 `@updateURL` 与 `@downloadURL`，支持在暴力猴中**自动检查更新与一键在线安装**。
+自用的高质量 Violentmonkey / Tampermonkey 用户脚本集合。所有脚本作者统一为 `yiheng`，图标均采用来自 icones.js.org 的高清矢量网络图标，所有脚本均配置 `@updateURL` 与 `@downloadURL`，支持在暴力猴中**自动检查更新与一键在线安装**。
 
 ---
 
