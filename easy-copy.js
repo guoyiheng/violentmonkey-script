@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         Easy Copy & qBittorrent 推送
-// @namespace    http://tampermonkey.net/
-// @version      2.1.0
+// @namespace    https://github.com/guoyiheng/violentmonkey-script
+// @version      2.2.0
 // @description  边缘吸附可折叠面板，自动拦截并汇总复制的磁力链接、去重、一键推送 NAS qBittorrent、跨标签页同步、记住位置
-// @author       you
+// @author       guoyiheng
 // @match        http://*/*
 // @match        https://*/*
+// @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/easy-copy.js
+// @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/easy-copy.js
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_addValueChangeListener
@@ -24,7 +26,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.1.0'
+  const SCRIPT_VERSION = 'v2.2.0'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
