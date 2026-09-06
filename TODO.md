@@ -1,5 +1,0 @@
-- [x] 新建一个暴力猴脚本，作用是检测到复制的内容是magnet磁力后，通过点击按钮，将磁力下载发送到qbittorrent中(我是部署在nas中的，[http://192.168.31.155:8085/](http://192.168.31.155:8085/))
-  - 样式和位置，包括拖动的规则，参考web-shelf.js中的样式 (已合并入 `scripts/easy-copy.user.js`，原 `qbittorrent.user.js` 废弃)
-- [x] 将easy-copy.js的样式和位置，包括拖动的规则，参考web-shelf.js中的样式 (已完成)
-- [x] 推送成功的磁力从框中自动删除，重复任务智能识别并删除，上传限速 1KB/s，分类默认 magnet
-- [x] 重构项目目录结构为标准的 `scripts/*.user.js`，配置方案一在线自动检查更新与一键安装索引
