@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站关灯模式
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.1.1
+// @version      1.1.2
 // @description  只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白
 // @author       yiheng
 // @icon         https://api.iconify.design/ri:bilibili-fill.svg?color=%23fb7299

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         网盘自动转存
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.0.1
+// @version      1.0.2
 // @description  自动填充提取码并保存分享文件到网盘
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:cloud-download-bold-duotone.svg?color=%232563eb

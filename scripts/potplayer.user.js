@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jellyfin 外部播放
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      0.1.1
+// @version      0.1.2
 // @description  在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频
 // @author       yiheng
 // @icon         https://api.iconify.design/simple-icons:jellyfin.svg?color=%23aa5cc3

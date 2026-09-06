@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.0
+// @version      2.2.1
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.0'
+  const SCRIPT_VERSION = 'v2.2.1'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
