@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.4
+// @version      2.2.5
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.4'
+  const SCRIPT_VERSION = 'v2.2.5'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -1311,9 +1311,9 @@
         <div class="ec-btn-row">
           <button class="ec-btn ec-btn-icon ec-undo-btn" type="button" aria-label="撤销版本" title="撤销至上一个版本">${ICONS.undo}</button>
           <button class="ec-btn ec-btn-icon ec-redo-btn" type="button" aria-label="重做版本" title="恢复至下一个版本">${ICONS.redo}</button>
-          <button class="ec-btn ec-filter-btn" type="button" title="连接 qB 将 magnet 分类中非 MP4 或小于 25MB 的文件设为不下载">
+          <button class="ec-btn ec-filter-btn" type="button" title="连接 qB 将 magnet 分类中非视频或小于 25MB 的文件设为不下载">
             ${ICONS.filter}
-            <span>过滤非MP4</span>
+            <span>过滤非视频</span>
           </button>
           <button class="ec-btn ec-btn-primary ec-push-all-btn" type="button" title="将框中所有磁力推送到 NAS qBittorrent">
             ${ICONS.rocket}
@@ -1911,7 +1911,7 @@
     }
   }
 
-  // ---------- 过滤 qBittorrent 中指定分类的任务，仅下载 MP4 文件 ----------
+  // ---------- 过滤 qBittorrent 中指定分类的任务，仅下载视频文件 (>= 25MB) ----------
   const triggerFilterMp4 = async () => {
     if (qbBusy) return
     qbBusy = true
@@ -1979,17 +1979,18 @@
         }
 
         // 过滤规则：
-        // 1. 扩展名不是 .mp4；
-        // 2. 或者是 .mp4 但文件大小小于 25MB (25 * 1024 * 1024 字节)
-        const MIN_MP4_SIZE_BYTES = 25 * 1024 * 1024
+        // 1. 扩展名不是常见的视频格式（非视频文件）；
+        // 2. 或者是视频文件但文件大小小于 25MB (25 * 1024 * 1024 字节)
+        const MIN_VIDEO_SIZE_BYTES = 25 * 1024 * 1024
+        const VIDEO_EXT_REGEX = /\.(mp4|mkv|avi|mov|wmv|flv|f4v|webm|ts|m2ts|rm|rmvb|m4v|mpg|mpeg|vob|3gp|asf|divx)$/i
         const skipIds = []
         for (let idx = 0; idx < files.length; idx++) {
           const f = files[idx]
           const fid = f.index !== undefined ? f.index : idx
           const fname = (f.name || '').trim().toLowerCase()
           const fsize = typeof f.size === 'number' ? f.size : Number(f.size) || 0
-          const isMp4 = fname.endsWith('.mp4')
-          const isTarget = isMp4 && fsize >= MIN_MP4_SIZE_BYTES
+          const isVideo = VIDEO_EXT_REGEX.test(fname)
+          const isTarget = isVideo && fsize >= MIN_VIDEO_SIZE_BYTES
 
           if (!isTarget && f.priority !== 0) {
             skipIds.push(fid)
@@ -2010,7 +2011,7 @@
 
       // 反馈结果
       if (ignoredFilesCount > 0) {
-        let msg = `已处理 ${processedCount} 个任务，将 ${ignoredFilesCount} 个非 MP4 / 小于 25MB 文件设为不下载 ✓`
+        let msg = `已处理 ${processedCount} 个任务，将 ${ignoredFilesCount} 个非视频 / 小于 25MB 文件设为不下载 ✓`
         if (pendingMetaCount > 0) {
           msg += `（另有 ${pendingMetaCount} 个任务元数据尚在拉取）`
         }
@@ -2025,7 +2026,7 @@
       } else {
         showCenterToast(
           '检查完成',
-          `[${category}] 分类的 ${torrents.length} 个任务中无待过滤的非 MP4 / 小于 25MB 文件 ✓`,
+          `[${category}] 分类的 ${torrents.length} 个任务中无待过滤的非视频 / 小于 25MB 文件 ✓`,
           'info',
           2500,
         )
@@ -2245,7 +2246,7 @@
   if (typeof GM_registerMenuCommand === 'function') {
     GM_registerMenuCommand('展开/收起已收集磁力页面', () => setPanelOpen(!isPanelOpen()))
     GM_registerMenuCommand('推送磁力至 NAS qBittorrent', triggerPushAll)
-    GM_registerMenuCommand('过滤 qB magnet 任务为仅下载 MP4', triggerFilterMp4)
+    GM_registerMenuCommand('过滤 qB magnet 任务为仅下载视频', triggerFilterMp4)
     GM_registerMenuCommand('打开 qBittorrent NAS 设置', () => setPanelOpen(true, true))
   }
 

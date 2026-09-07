@@ -10,7 +10,7 @@
 
 | 脚本名称 | 说明 | 当前版本 | 作者 | 一键安装 (GitHub 直链) | 国内加速安装 (ghproxy) |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **磁力快推** | 自动汇总复制的磁力链接并推送到 NAS qBittorrent (支持一键过滤非 MP4 及小于 25MB 文件、默认 magnet 分类、上传限速 1KB/s，成功/重复任务自动删除) | `v2.2.4` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
+| **磁力快推** | 自动汇总复制的磁力链接并推送到 NAS qBittorrent (支持一键过滤非视频及小于 25MB 文件、默认 magnet 分类、上传限速 1KB/s，成功/重复任务自动删除) | `v2.2.5` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
 | **B站关灯模式** | 只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白 | `v1.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) |
 | **Jellyfin 外部播放** | 在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频 | `v0.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) |
 | **PL 论坛助手** | 论坛搜索时自动选中 3D & VR 分区，话题页悬浮下载单元格 | `v1.2.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) |
@@ -32,8 +32,6 @@ violentmonkey-script/
 │   ├── baidu-pan.user.js                # 网盘自动转存脚本
 │   ├── db-vr.user.js                    # DB VR 筛选脚本
 │   └── youpu.user.js                    # 有谱伴奏助手脚本
-├── tools/                                # 服务端/NAS 辅助自动化工具
-│   └── qb-auto-filter/                  # qBittorrent 自动过滤仅下载 MP4 工具 (Python 零依赖)
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束
 └── .gitignore                            # Git 忽略文件
