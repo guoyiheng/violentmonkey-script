@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.5
+// @version      2.2.6
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.5'
+  const SCRIPT_VERSION = 'v2.2.6'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -82,7 +82,6 @@
     password: '',
     savepath: '',
     category: 'magnet',
-    autoSend: false,
   }
 
   // 兼容读取之前 qbittorrent.user.js 的配置
@@ -666,8 +665,50 @@
   cursor: pointer;
 }
 
-.ec-checkbox-row input {
-  cursor: pointer;
+/* Trackers 批量刷新区域 */
+.ec-tracker-sync-box {
+  margin: 6px 0 8px 0;
+  padding: 9px 12px;
+  border: 1px solid var(--ec-line);
+  border-radius: 8px;
+  background: var(--ec-hover);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ec-tracker-sync-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ec-tracker-sync-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ec-ink);
+}
+
+.ec-tracker-sync-title svg {
+  color: var(--ec-accent-strong);
+}
+
+.ec-tracker-sync-desc {
+  font-size: 11px;
+  color: var(--ec-ink-muted);
+  line-height: 1.4;
+}
+
+.ec-refresh-trackers-btn {
+  padding: 3px 10px;
+  font-size: 11px;
+  height: 26px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* 按钮工具栏 */
@@ -962,6 +1003,7 @@
     redo: `<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 6.4H6.4a3.6 3.6 0 0 0 0 7.2H10"/><path d="M10.2 3.6 13 6.4l-2.8 2.8"/></svg>`,
     pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17z"/></svg>`,
     filter: `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>`,
+    refresh: `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>`,
     check: `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 8.5l3.2 3.2 6.4-6.4"/></svg>`,
     info: `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r="0.5" fill="currentColor"/></svg>`,
   }
@@ -1353,11 +1395,21 @@
             <input id="ec-qb-cat" class="ec-input" type="text" placeholder="magnet" spellcheck="false" />
           </div>
         </div>
-        <label class="ec-checkbox-row">
-          <input id="ec-qb-autosend" type="checkbox" />
-          <span>复制或点击磁力时自动推送至 NAS</span>
-        </label>
-        <div style="font-size:11px;color:var(--ec-ink-muted);line-height:1.4;margin:4px 0 2px 2px;">
+        <div class="ec-tracker-sync-box">
+          <div class="ec-tracker-sync-header">
+            <div class="ec-tracker-sync-title">
+              ${ICONS.refresh}
+              <span>同步 / 刷新 Trackers</span>
+            </div>
+            <button class="ec-btn ec-refresh-trackers-btn" type="button" title="向 magnet 分组任务注入 qB 设置中配置的公共 Tracker 并重新宣告">
+              刷新 Trackers
+            </button>
+          </div>
+          <div class="ec-tracker-sync-desc">
+            将 qB 全局设置中的公共 Tracker 批量应用至 magnet 分类下载任务并触发重新宣告加速。
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--ec-ink-muted);line-height:1.4;margin:2px 0 2px 2px;">
           ⚡ 推送规则：上传限速 1 KB/s，下载不限速；推送成功后自动从框中删除。
         </div>
         <div class="ec-status ec-qb-status"></div>
@@ -1394,7 +1446,7 @@
   const qbPwdToggle = root.querySelector('.ec-pwd-toggle')
   const qbPathInput = root.querySelector('#ec-qb-path')
   const qbCatInput = root.querySelector('#ec-qb-cat')
-  const qbAutoSendCheckbox = root.querySelector('#ec-qb-autosend')
+  const refreshTrackersBtn = root.querySelector('.ec-refresh-trackers-btn')
   const qbStatusNode = root.querySelector('.ec-qb-status')
   const qbTestBtn = root.querySelector('.ec-test-btn')
   const qbBackBtn = root.querySelector('.ec-back-btn')
@@ -1575,7 +1627,6 @@
     qbPwdInput.value = qbSettings.password || ''
     qbPathInput.value = qbSettings.savepath || ''
     qbCatInput.value = qbSettings.category || ''
-    qbAutoSendCheckbox.checked = !!qbSettings.autoSend
   }
 
   const saveSettingsFromForm = () => {
@@ -1584,7 +1635,6 @@
     qbSettings.password = qbPwdInput.value || ''
     qbSettings.savepath = (qbPathInput.value && qbPathInput.value.trim()) || ''
     qbSettings.category = (qbCatInput.value && qbCatInput.value.trim()) || DEFAULT_QB_SETTINGS.category
-    qbSettings.autoSend = !!qbAutoSendCheckbox.checked
     saveJSON(QB_SETTINGS_KEY, qbSettings)
   }
 
@@ -1600,7 +1650,11 @@
       el.addEventListener('change', saveSettingsFromForm)
     }
   })
-  qbAutoSendCheckbox.addEventListener('change', saveSettingsFromForm)
+
+  refreshTrackersBtn.addEventListener('click', (e) => {
+    e.stopPropagation()
+    triggerRefreshTrackers()
+  })
 
   qbPwdToggle.addEventListener('click', (e) => {
     e.stopPropagation()
@@ -1689,6 +1743,7 @@
     setDisabled(redoBtn, future.length === 0)
     setDisabled(pushBtn, items.length === 0 || qbBusy)
     setDisabled(filterBtn, qbBusy)
+    setDisabled(refreshTrackersBtn, qbBusy)
   }
 
   const updateBadge = () => {
@@ -2040,6 +2095,163 @@
     }
   }
 
+  // ---------- 刷新 qBittorrent 中 magnet 分组任务的 Trackers ----------
+  const triggerRefreshTrackers = async () => {
+    if (qbBusy) return
+    qbBusy = true
+    updateActionButtons()
+
+    const origHtml = refreshTrackersBtn.innerHTML
+    refreshTrackersBtn.innerHTML = `<span>刷新中…</span>`
+
+    const category = (qbSettings.category || 'magnet').trim() || 'magnet'
+    showCenterToast(
+      '正在连接 qBittorrent...',
+      `检索 [${category}] 分类下的任务并获取公共 Tracker 列表...`,
+      'info',
+      2000,
+    )
+
+    try {
+      // 1. 获取全局首选项配置中的 add_trackers
+      const queryPrefs = async () => {
+        return await qbRequest('/api/v2/app/preferences')
+      }
+
+      let prefRes
+      try {
+        prefRes = await queryPrefs()
+        if (prefRes.status === 403 || prefRes.status === 401) {
+          await qbLogin()
+          prefRes = await queryPrefs()
+        }
+      } catch (connErr) {
+        showCenterToast('无法连接 qBittorrent', connErr.message || '请检查网络或 NAS 地址配置', 'danger', 3800)
+        return
+      }
+
+      if (prefRes.status !== 200) {
+        throw new Error(`获取 qB 首选项异常 (HTTP ${prefRes.status}): ${(prefRes.responseText || '').slice(0, 80)}`)
+      }
+
+      const prefs = JSON.parse(prefRes.responseText || '{}')
+      const rawTrackers = (prefs.add_trackers || '').trim()
+      const trackers = rawTrackers
+        .split(/\r?\n/)
+        .map((t) => t.trim())
+        .filter((t) => t && !t.startsWith('#') && (t.startsWith('http://') || t.startsWith('https://') || t.startsWith('udp://') || t.startsWith('wss://')))
+
+      if (!trackers.length) {
+        showCenterToast(
+          '未在 qB 中检测到 Tracker 列表',
+          '请先在 qBittorrent「设置 -> BitTorrent -> 自动向新下载添加这些 Tracker」中配置列表后再刷新',
+          'warning',
+          4500,
+        )
+        return
+      }
+
+      // 2. 获取指定 category 的种子任务列表
+      const queryTorrents = async () => {
+        const path = `/api/v2/torrents/info?category=${encodeURIComponent(category)}`
+        return await qbRequest(path)
+      }
+
+      let torrentRes = await queryTorrents()
+      if (torrentRes.status === 403 || torrentRes.status === 401) {
+        await qbLogin()
+        torrentRes = await queryTorrents()
+      }
+
+      if (torrentRes.status !== 200) {
+        throw new Error(`获取任务列表异常 (HTTP ${torrentRes.status}): ${(torrentRes.responseText || '').slice(0, 80)}`)
+      }
+
+      const torrents = JSON.parse(torrentRes.responseText || '[]')
+      if (!Array.isArray(torrents) || torrents.length === 0) {
+        showCenterToast('无需处理', `qB 中 [${category}] 分类下暂无任务`, 'info', 2500)
+        return
+      }
+
+      let updatedTorrentCount = 0
+      let totalAddedTrackers = 0
+      const affectedHashes = []
+
+      for (const t of torrents) {
+        const hash = t.hash
+        if (!hash) continue
+
+        affectedHashes.push(hash.toLowerCase())
+
+        // 查询该种子已有 trackers
+        let trRes = await qbRequest(`/api/v2/torrents/trackers?hash=${encodeURIComponent(hash)}`)
+        if (trRes.status === 403 || trRes.status === 401) {
+          await qbLogin()
+          trRes = await qbRequest(`/api/v2/torrents/trackers?hash=${encodeURIComponent(hash)}`)
+        }
+
+        let existingTrackers = []
+        try {
+          existingTrackers = JSON.parse(trRes.responseText || '[]')
+        } catch (_) {}
+
+        const existingUrls = new Set(
+          existingTrackers
+            .map((item) => (item.url || '').trim().toLowerCase())
+            .filter(Boolean),
+        )
+
+        const toAdd = trackers.filter((url) => !existingUrls.has(url.toLowerCase()))
+
+        if (toAdd.length > 0) {
+          const data = `hash=${encodeURIComponent(hash.toLowerCase())}&urls=${encodeURIComponent(toAdd.join('\n'))}`
+          await qbRequest('/api/v2/torrents/addTrackers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: data,
+          })
+          updatedTorrentCount++
+          totalAddedTrackers += toAdd.length
+        }
+      }
+
+      // 3. 批量触发重新宣告 (Reannounce)
+      if (affectedHashes.length > 0) {
+        try {
+          const reannounceData = `hashes=${encodeURIComponent(affectedHashes.join('|'))}`
+          await qbRequest('/api/v2/torrents/reannounce', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: reannounceData,
+          })
+        } catch (_) {}
+      }
+
+      // 4. 反馈结果
+      if (totalAddedTrackers > 0) {
+        showCenterToast(
+          'Trackers 刷新成功',
+          `已为 ${updatedTorrentCount} 个任务注入 ${totalAddedTrackers} 个新 Tracker，并已全部重新宣告连接 ✓`,
+          'success',
+          3500,
+        )
+      } else {
+        showCenterToast(
+          'Trackers 已是最新',
+          `[${category}] 分类下的 ${torrents.length} 个任务已包含全部 ${trackers.length} 个 Tracker，已重新宣告连接 ✓`,
+          'info',
+          3000,
+        )
+      }
+    } catch (err) {
+      showCenterToast('刷新 Trackers 失败', err.message || '网络连接异常', 'danger', 4000)
+    } finally {
+      qbBusy = false
+      refreshTrackersBtn.innerHTML = origHtml
+      updateActionButtons()
+    }
+  }
+
   // ---------- 磁力追加并弹出正中间 Toast ----------
   const appendMagnetsFromText = async (rawText) => {
     const magnets = extractMagnets(rawText)
@@ -2073,63 +2285,6 @@
       : `${firstName} · 当前共 ${items.length} 条`
 
     showCenterToast('收集磁力链接成功！', subtitle, 'success', 2200)
-
-    // 若开启自动推送至 NAS
-    if (qbSettings.autoSend) {
-      try {
-        const results = await pushToQbittorrent(newMagnets)
-
-        const toRemoveHashes = new Set(
-          results.filter((r) => r.shouldRemove && r.hash).map((r) => r.hash),
-        )
-        const toRemoveMagnets = new Set(
-          results.filter((r) => r.shouldRemove).map((r) => r.magnet),
-        )
-
-        if (toRemoveMagnets.size > 0 || toRemoveHashes.size > 0) {
-          pushHistory()
-          items = items.filter((m) => {
-            if (toRemoveMagnets.has(m)) return false
-            const h = extractMagnetHash(m)
-            if (h && toRemoveHashes.has(h)) return false
-            return true
-          })
-          renderAll()
-          syncOut()
-        }
-
-        const added = results.filter((r) => r.success && !r.isDuplicate)
-        const dups = results.filter((r) => r.isDuplicate)
-        const failed = results.filter((r) => !r.success)
-
-        if (failed.length === 0) {
-          if (dups.length === results.length) {
-            showCenterToast(
-              '任务已在 qBittorrent 中存在',
-              `${results[0].name}（重复任务，已从列表删除）`,
-              'info',
-              2400,
-            )
-          } else {
-            showCenterToast(
-              '已自动推送至 NAS 下载！',
-              `${results[0].name} 已发送（上传限速 1KB/s，已从列表删除）`,
-              'success',
-              2400,
-            )
-          }
-        } else {
-          showCenterToast(
-            '自动推送至 qBittorrent 失败',
-            failed.map((f) => `${f.name}: ${f.reason}`).join('\n'),
-            'danger',
-            4500,
-          )
-        }
-      } catch (err) {
-        showCenterToast('自动推送至 qBittorrent 失败', err.message, 'danger', 3500)
-      }
-    }
 
     return true
   }
@@ -2247,6 +2402,7 @@
     GM_registerMenuCommand('展开/收起已收集磁力页面', () => setPanelOpen(!isPanelOpen()))
     GM_registerMenuCommand('推送磁力至 NAS qBittorrent', triggerPushAll)
     GM_registerMenuCommand('过滤 qB magnet 任务为仅下载视频', triggerFilterMp4)
+    GM_registerMenuCommand('刷新 magnet 任务 Trackers', triggerRefreshTrackers)
     GM_registerMenuCommand('打开 qBittorrent NAS 设置', () => setPanelOpen(true, true))
   }
 
