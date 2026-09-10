@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.6
+// @version      2.2.7
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://api.iconify.design/solar:magnet-bold-duotone.svg?color=%231f7d96
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.6'
+  const SCRIPT_VERSION = 'v2.2.7'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -1206,8 +1206,67 @@
 
     const body = (res.responseText || '').trim()
 
-    // 情况 A：添加成功
-    if (res.status === 200 && body === 'Ok.') {
+    // 尝试解析 JSON 返回值 (兼容 qBittorrent WebAPI 2.14.0+，即 qB v5.1+)
+    let jsonResp = null
+    try {
+      if (body.startsWith('{') && body.endsWith('}')) {
+        jsonResp = JSON.parse(body)
+      }
+    } catch (_) {}
+
+    // 情况 A1：新版 WebAPI (>= 2.14.0) 返回 JSON 且添加成功 (或异步处理中)
+    if (jsonResp && typeof jsonResp === 'object') {
+      const addedIds = Array.isArray(jsonResp.added_torrent_ids) ? jsonResp.added_torrent_ids : []
+      const successCount = Number(jsonResp.success_count) || 0
+      const pendingCount = Number(jsonResp.pending_count) || 0
+      const failureCount = Number(jsonResp.failure_count) || 0
+
+      if (successCount > 0 || pendingCount > 0 || addedIds.length > 0) {
+        return {
+          magnet,
+          name,
+          hash: hash || addedIds[0] || '',
+          success: true,
+          isDuplicate: false,
+          shouldRemove: true,
+          reason: pendingCount > 0 && successCount === 0 ? '已提交处理中' : '添加成功',
+        }
+      }
+
+      // 如果全部失败，优先检查是否是因任务重复已存在导致的失败
+      if (failureCount > 0) {
+        if (hash) {
+          const existingAfter = await checkTorrentExists(hash)
+          if (existingAfter) {
+            const stateDesc = existingAfter.state ? `[${existingAfter.state}] ` : ''
+            const progressDesc = existingAfter.progress !== undefined ? ` (进度 ${(existingAfter.progress * 100).toFixed(0)}%)` : ''
+            return {
+              magnet,
+              name: existingAfter.name || name,
+              hash,
+              success: true,
+              isDuplicate: true,
+              shouldRemove: true,
+              reason: `任务已在 qBittorrent 中存在 ${stateDesc}${progressDesc}`,
+            }
+          }
+        }
+        if (res.status === 409) {
+          return {
+            magnet,
+            name,
+            hash,
+            success: true,
+            isDuplicate: true,
+            shouldRemove: true,
+            reason: '任务已在 qBittorrent 中存在 (重复任务)',
+          }
+        }
+      }
+    }
+
+    // 情况 A2：旧版 WebAPI 返回 Ok. (HTTP 200) 或 202 异步状态
+    if ((res.status === 200 || res.status === 202) && (body === 'Ok.' || body === '')) {
       return {
         magnet,
         name,
