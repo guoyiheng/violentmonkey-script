@@ -26,7 +26,9 @@
 ```text
 violentmonkey-script/
 ├── scripts/                              # 用户脚本目录 (统一采用 *.user.js 命名)
-│   ├── qbittorrent-external-search.user.js # qBittorrent 外部搜索`r`n│   ├── qbittorrent-search-icon.svg      # qBittorrent 脚本图标`r`n│   ├── easy-copy.user.js                # 磁力快推脚本
+│   ├── qbittorrent-external-search.user.js # qBittorrent 外部搜索
+│   ├── qbittorrent-search-icon.svg      # qBittorrent 脚本图标
+│   ├── easy-copy.user.js                # 磁力快推脚本
 │   ├── bilibili.user.js                 # B站关灯模式脚本
 │   ├── potplayer.user.js                # Jellyfin 外部播放脚本
 │   ├── pl-auto-vr-filter.user.js        # PL 论坛助手脚本
@@ -49,4 +51,3 @@ violentmonkey-script/
 3. **版本发布规范**：
    - 每次修改脚本后，递增元数据中的 `// @version` 并在脚本内更新 `SCRIPT_VERSION`；
    - 执行 `git push` 推送至 GitHub 后，暴力猴即可检测到新版本。
-
