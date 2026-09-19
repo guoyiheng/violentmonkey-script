@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         qBittorrent 外部搜索按钮
 // @namespace    https://github.com/yiheng/violentmonkey-script
-// @version      1.0.0
+// @version      1.0.1
 // @description  在未完成的 qBittorrent 任务行中添加 JavDB 和无钱搜搜索按钮
 // @match        http://192.168.31.155:8085/*
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-search-icon.svg
@@ -88,6 +88,23 @@
         const url = type === "javdb"
             ? `https://javdb.com/search?q=${encodeURIComponent(keyword)}&f=all`
             : `https://wuqianso.org/search?keyword=${encodeURIComponent(keyword)}`;
+
+        // 无钱搜由 Cloudflare 保护，直接从新标签页打开 /search 容易被判定为
+        // 非浏览器请求并跳回首页。先打开首页建立站点 Cookie，再由同一页面跳转搜索。
+        if (type === "wuqian") {
+            const searchTab = window.open("https://wuqianso.org/", "_blank");
+            if (!searchTab)
+                return;
+            window.setTimeout(() => {
+                try {
+                    searchTab.location.href = url;
+                }
+                catch (_) {
+                    // 若浏览器阻止脚本访问新窗口，则保留首页供用户手动搜索。
+                }
+            }, 900);
+            return;
+        }
         window.open(url, "_blank", "noopener");
     }
 
