@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         qBittorrent 外部搜索按钮
 // @namespace    https://github.com/yiheng/violentmonkey-script
-// @version      1.0.1
+// @version      1.0.2
 // @description  在未完成的 qBittorrent 任务行中添加 JavDB 和无钱搜搜索按钮
 // @match        http://192.168.31.155:8085/*
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-search-icon.svg
@@ -18,6 +18,7 @@
 
     const COLUMN_NAME = "qb_external_search";
     const STYLE_ID = "qb-external-search-style";
+    const TWO_WEEKS_SECONDS = 14 * 24 * 60 * 60;
 
     function installStyle() {
         if (document.getElementById(STYLE_ID))
@@ -56,8 +57,32 @@
             .qb-external-search-buttons button:hover {
                 background: var(--color-background-hover, #555);
             }
+            #torrentsTableDiv td.qb-added-on-overdue {
+                color: #f04444 !important;
+                font-weight: 700;
+            }
         `;
         document.head.append(style);
+    }
+
+    function updateAddedOnHighlight(table, row) {
+        const pos = table.getColumnPos("added_on");
+        if (pos < 0)
+            return;
+
+        const tr = table.getTrByRowId(row.rowId);
+        const cell = tr && table.getRowCells(tr)[pos];
+        if (!cell)
+            return;
+
+        const progress = Number(row.full_data?.progress);
+        const addedOn = Number(row.full_data?.added_on);
+        const overdue = Number.isFinite(progress)
+            && progress < 1
+            && Number.isFinite(addedOn)
+            && addedOn > 0
+            && (Date.now() / 1000 - addedOn >= TWO_WEEKS_SECONDS);
+        cell.classList.toggle("qb-added-on-overdue", overdue);
     }
 
     function cleanName(name) {
@@ -157,6 +182,14 @@
         column.dataProperties = ["name", "progress"];
         column.updateTd = function (td, row) {
             renderCell(td, row);
+        };
+
+        const originalUpdateRow = table.updateRow.bind(table);
+        table.updateRow = function (tr, fullUpdate) {
+            originalUpdateRow(tr, fullUpdate);
+            const row = this.rows.get(tr.rowId);
+            if (row)
+                updateAddedOnHighlight(this, row);
         };
 
         // 安装时已有的行和虚拟列表缓存也需要补齐新列。
