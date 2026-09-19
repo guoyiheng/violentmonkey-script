@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         qBittorrent 外部搜索按钮
 // @namespace    https://github.com/yiheng/violentmonkey-script
-// @version      1.0.2
+// @version      1.0.3
 // @description  在未完成的 qBittorrent 任务行中添加 JavDB 和无钱搜搜索按钮
 // @match        http://192.168.31.155:8085/*
+// @match        https://wuqianso.org/*
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-search-icon.svg
 // @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js
 // @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js
@@ -15,6 +16,51 @@
 
 (function () {
     "use strict";
+
+    // 无钱搜需要先通过首页建立 Cloudflare Cookie，再提交首页自带的搜索表单。
+    // 使用 hash 传递关键词，不会把关键词提前作为 /search 的直达请求发送出去。
+    if (location.hostname === "wuqianso.org") {
+        const marker = "#qb-search=";
+        if (!location.hash.startsWith(marker))
+            return;
+
+        let keyword = "";
+        try {
+            keyword = decodeURIComponent(location.hash.slice(marker.length));
+        }
+        catch (_) {
+            return;
+        }
+        if (!keyword)
+            return;
+
+        const submitSearch = () => {
+            const form = document.querySelector("#search-form");
+            const input = form?.querySelector('input[name="keyword"]');
+            if (!form || !input)
+                return false;
+
+            input.value = keyword;
+            if (typeof form.requestSubmit === "function")
+                form.requestSubmit();
+            else
+                form.submit();
+            return true;
+        };
+
+        if (submitSearch())
+            return;
+
+        const timer = window.setInterval(() => {
+            if (submitSearch())
+                window.clearInterval(timer);
+        }, 500);
+        window.setTimeout(() => window.clearInterval(timer), 30000);
+        return;
+    }
+
+    if (location.hostname !== "192.168.31.155")
+        return;
 
     const COLUMN_NAME = "qb_external_search";
     const STYLE_ID = "qb-external-search-style";
@@ -117,17 +163,7 @@
         // 无钱搜由 Cloudflare 保护，直接从新标签页打开 /search 容易被判定为
         // 非浏览器请求并跳回首页。先打开首页建立站点 Cookie，再由同一页面跳转搜索。
         if (type === "wuqian") {
-            const searchTab = window.open("https://wuqianso.org/", "_blank");
-            if (!searchTab)
-                return;
-            window.setTimeout(() => {
-                try {
-                    searchTab.location.href = url;
-                }
-                catch (_) {
-                    // 若浏览器阻止脚本访问新窗口，则保留首页供用户手动搜索。
-                }
-            }, 900);
+            window.open(`https://wuqianso.org/#qb-search=${encodeURIComponent(keyword)}`, "_blank");
             return;
         }
         window.open(url, "_blank", "noopener");
