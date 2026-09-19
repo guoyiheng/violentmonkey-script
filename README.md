@@ -10,6 +10,7 @@
 
 | 脚本名称 | 说明 | 当前版本 | 作者 | 一键安装 (GitHub 直链) | 国内加速安装 (ghproxy) |
 | :--- | :--- | :---: | :---: | :---: | :---: |
+| **qBittorrent 外部搜索** | 在未完成的 qBittorrent 任务中添加 JavDB 和无钱搜搜索按钮 | `v1.0.0` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js) |
 | **磁力快推** | 自动汇总复制的磁力链接并推送到 NAS qBittorrent (支持一键过滤非视频及小于 25MB 文件、一键同步刷新正在下载任务的 Trackers、默认 magnet 分类、上传限速 1KB/s，成功/重复任务自动删除) | `v2.2.7` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
 | **B站关灯模式** | 只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白 | `v1.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) |
 | **Jellyfin 外部播放** | 在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频 | `v0.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) |
@@ -25,7 +26,7 @@
 ```text
 violentmonkey-script/
 ├── scripts/                              # 用户脚本目录 (统一采用 *.user.js 命名)
-│   ├── easy-copy.user.js                # 磁力快推脚本
+│   ├── qbittorrent-external-search.user.js # qBittorrent 外部搜索`r`n│   ├── qbittorrent-search-icon.svg      # qBittorrent 脚本图标`r`n│   ├── easy-copy.user.js                # 磁力快推脚本
 │   ├── bilibili.user.js                 # B站关灯模式脚本
 │   ├── potplayer.user.js                # Jellyfin 外部播放脚本
 │   ├── pl-auto-vr-filter.user.js        # PL 论坛助手脚本
@@ -48,3 +49,4 @@ violentmonkey-script/
 3. **版本发布规范**：
    - 每次修改脚本后，递增元数据中的 `// @version` 并在脚本内更新 `SCRIPT_VERSION`；
    - 执行 `git push` 推送至 GitHub 后，暴力猴即可检测到新版本。
+
