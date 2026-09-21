@@ -2,9 +2,9 @@
 // @name         PL 论坛助手
 // @name:zh-CN   PL 论坛助手
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.2.2
+// @version      1.2.3
 // @author       yiheng
-// @icon         https://api.iconify.design/hugeicons:virtual-reality-vr-01.svg?color=%234f46e5
+// @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/pl-auto-vr-filter.svg
 // @description  论坛搜索自动选中 3D & VR 分区；话题页把第二行下载单元格悬浮到右侧
 // @description:zh-CN 论坛搜索时自动选中 3D & Virtual Reality 分区 (VR)；打开话题页时悬浮下载单元格
 // @match        *://*/*

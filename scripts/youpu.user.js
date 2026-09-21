@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         有谱伴奏助手
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.0.2
+// @version      1.0.3
 // @description  有谱伴奏本地会员状态支持
 // @author       yiheng
-// @icon         https://api.iconify.design/solar:music-note-bold-duotone.svg?color=%2310b981
+// @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/youpu.svg
 // @match        *://*.yopu.co/*
 // @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js
 // @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js

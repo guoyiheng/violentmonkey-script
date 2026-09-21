@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         DB VR 筛选
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.0.2
+// @version      1.0.3
 // @description  演员页面一键直达 VR 分区作品
 // @author       yiheng
-// @icon         https://api.iconify.design/hugeicons:virtual-reality-vr-01.svg?color=%23f07070
+// @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/db-vr.svg
 // @match        *://*/*
 // @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js
 // @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js

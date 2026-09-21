@@ -1,6 +1,6 @@
 # Violentmonkey Scripts (暴力猴脚本集合)
 
-自用的高质量 Violentmonkey / Tampermonkey 用户脚本集合。所有脚本作者统一为 `yiheng`，图标均采用来自 icones.js.org 的高清矢量网络图标，所有脚本均配置 `@updateURL` 与 `@downloadURL`，支持在暴力猴中**自动检查更新与一键在线安装**。
+自用的高质量 Violentmonkey / Tampermonkey 用户脚本集合。所有脚本作者统一为 `yiheng`，图标均保存在本仓库中，通过 GitHub 原始文件链接加载，所有脚本均配置 `@updateURL` 与 `@downloadURL`，支持在暴力猴中**自动检查更新与一键在线安装**。
 
 ---
 
@@ -11,13 +11,13 @@
 | 脚本名称 | 说明 | 当前版本 | 作者 | 一键安装 (GitHub 直链) | 国内加速安装 (ghproxy) |
 | :--- | :--- | :---: | :---: | :---: | :---: |
 | **qBittorrent 外部搜索** | 在未完成的 qBittorrent 任务中添加 JavDB 和无钱搜搜索按钮；超过两周未完成的任务高亮添加时间 | `v1.0.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js) |
-| **磁力快推** | 自动汇总复制的磁力链接并推送到 NAS qBittorrent (支持一键过滤非视频及小于 25MB 文件、一键同步刷新正在下载任务的 Trackers、默认 magnet 分类、上传限速 1KB/s，成功/重复任务自动删除) | `v2.2.7` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
-| **B站关灯模式** | 只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白 | `v1.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) |
-| **Jellyfin 外部播放** | 在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频 | `v0.1.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) |
-| **PL 论坛助手** | 论坛搜索时自动选中 3D & VR 分区，话题页悬浮下载单元格 | `v1.2.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) |
-| **网盘自动转存** | 百度网盘分享页面自动填充提取码并保存到个人网盘 | `v1.0.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/baidu-pan.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/baidu-pan.user.js) |
-| **DB VR 筛选** | 演员作品页面一键直达 VR 分区列表 | `v1.0.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js) |
-| **有谱伴奏助手** | 有谱伴奏网页端本地状态支持 | `v1.0.2` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js) |
+| **磁力快推** | 自动汇总复制的磁力链接并推送到 NAS qBittorrent (支持一键过滤非视频及小于 25MB 文件、一键同步刷新正在下载任务的 Trackers、默认 magnet 分类、上传限速 1KB/s，成功/重复任务自动删除) | `v2.2.8` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/easy-copy.user.js) |
+| **B站关灯模式** | 只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白 | `v1.1.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/bilibili.user.js) |
+| **Jellyfin 外部播放** | 在 Jellyfin 网页端一键调用本地 PotPlayer 播放视频 | `v0.1.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/potplayer.user.js) |
+| **PL 论坛助手** | 论坛搜索时自动选中 3D & VR 分区，话题页悬浮下载单元格 | `v1.2.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/pl-auto-vr-filter.user.js) |
+| **网盘自动转存** | 百度网盘分享页面自动填充提取码并保存到个人网盘 | `v1.0.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/baidu-pan.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/baidu-pan.user.js) |
+| **DB VR 筛选** | 演员作品页面一键直达 VR 分区列表 | `v1.0.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/db-vr.user.js) |
+| **有谱伴奏助手** | 有谱伴奏网页端本地状态支持 | `v1.0.3` | `yiheng` | [安装脚本](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js) | [加速安装](https://ghproxy.net/https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/youpu.user.js) |
 
 ---
 
@@ -25,6 +25,7 @@
 
 ```text
 violentmonkey-script/
+├── assets/icons/                         # 脚本 SVG 图标与来源说明
 ├── scripts/                              # 用户脚本目录 (统一采用 *.user.js 命名)
 │   ├── qbittorrent-external-search.user.js # qBittorrent 外部搜索
 │   ├── qbittorrent-search-icon.svg      # qBittorrent 脚本图标

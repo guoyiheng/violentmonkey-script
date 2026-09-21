@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         B站关灯模式
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      1.1.2
+// @version      1.1.3
 // @description  只保留 B 站播放器区域，其余区域按系统深浅色主题覆盖为纯黑或纯白
 // @author       yiheng
-// @icon         https://api.iconify.design/ri:bilibili-fill.svg?color=%23fb7299
+// @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/bilibili.svg
 // @match        https://www.bilibili.com/video/*
 // @match        https://www.bilibili.com/list/*
 // @match        https://www.bilibili.com/bangumi/play/*
