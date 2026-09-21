@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.8
+// @version      2.2.9
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/easy-copy.svg
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.8'
+  const SCRIPT_VERSION = 'v2.2.9'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -168,6 +168,7 @@
   // ---------- 样式安装 ----------
   const css = `
 #easy-copy-root {
+  --ec-launcher-peek: 10px;
   --ec-ink: #222725;
   --ec-ink-soft: #5e6863;
   --ec-ink-muted: #8e9993;
@@ -266,16 +267,18 @@
   cursor: grabbing;
 }
 
+/* 收起时固定露出窄边，不随数量徽标的宽度增加；左右使用同一尺寸。 */
 /* 右侧停靠 */
 #easy-copy-root.ec-dock-right .ec-launcher {
   border-right: none;
   border-radius: 21px 0 0 21px;
-  transform: translateX(18px);
+  transform: translateX(calc(100% - var(--ec-launcher-peek)));
   box-shadow: -4px 8px 24px rgba(25, 35, 30, 0.12), -1px 2px 6px rgba(25, 35, 30, 0.06);
 }
 
 #easy-copy-root.ec-dock-right .ec-launcher:hover,
 #easy-copy-root.ec-dock-right .ec-launcher:focus-within,
+#easy-copy-root.ec-dock-right.is-dragging .ec-launcher,
 #easy-copy-root.ec-dock-right.is-open .ec-launcher {
   transform: translateX(0);
   opacity: 1;
@@ -288,12 +291,13 @@
   flex-direction: row-reverse;
   border-left: none;
   border-radius: 0 21px 21px 0;
-  transform: translateX(-18px);
+  transform: translateX(calc(var(--ec-launcher-peek) - 100%));
   box-shadow: 4px 8px 24px rgba(25, 35, 30, 0.12), 1px 2px 6px rgba(25, 35, 30, 0.06);
 }
 
 #easy-copy-root.ec-dock-left .ec-launcher:hover,
 #easy-copy-root.ec-dock-left .ec-launcher:focus-within,
+#easy-copy-root.ec-dock-left.is-dragging .ec-launcher,
 #easy-copy-root.ec-dock-left.is-open .ec-launcher {
   transform: translateX(0);
   opacity: 1;
