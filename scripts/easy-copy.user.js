@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         磁力快推
 // @namespace    https://github.com/guoyiheng/violentmonkey-script
-// @version      2.2.9
+// @version      2.2.10
 // @description  磁力链接自动汇总、去重并一键推送到 NAS qBittorrent
 // @author       yiheng
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/assets/icons/easy-copy.svg
@@ -27,7 +27,7 @@
 
   if (window.top !== window.self) return
 
-  const SCRIPT_VERSION = 'v2.2.9'
+  const SCRIPT_VERSION = 'v2.2.10'
   const STORE_KEY = 'easy_copy_items_v1'
   const DOCK_KEY = 'easy_copy_dock_v2'
   const LEGACY_POS_KEY = 'easy_copy_pos_v1'
@@ -168,7 +168,7 @@
   // ---------- 样式安装 ----------
   const css = `
 #easy-copy-root {
-  --ec-launcher-peek: 10px;
+  --ec-launcher-peek: 34px;
   --ec-ink: #222725;
   --ec-ink-soft: #5e6863;
   --ec-ink-muted: #8e9993;
@@ -267,7 +267,7 @@
   cursor: grabbing;
 }
 
-/* 收起时固定露出窄边，不随数量徽标的宽度增加；左右使用同一尺寸。 */
+/* 收起时保留完整图标：1px 边框 + 12px 内边距 + 18px 图标 + 3px 留白；数量徽标隐藏。 */
 /* 右侧停靠 */
 #easy-copy-root.ec-dock-right .ec-launcher {
   border-right: none;
