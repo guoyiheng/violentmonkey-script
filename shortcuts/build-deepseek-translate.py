@@ -10,7 +10,8 @@
     导入快捷指令时会直接询问 API Key / 接口地址 / 模型，默认值即 DeepSeek，可以当场改成其它
     OpenAI 兼容服务；导入后在快捷指令里也能随时修改这三个文本动作，或改这里再重新生成。
 
-    API Key 的取用顺序: --api-key > 环境变量 DEEPSEEK_API_KEY > shortcuts/.deepseek-key（已 gitignore）。
+    API Key 与接口 / 模型等配置统一放在 shortcuts/.env（已 gitignore，首次运行自动生成模板）。
+    取用顺序: --api-key > 环境变量 DEEPSEEK_API_KEY > shortcuts/.env > 内置默认值。
     只要取到了真实 Key，产物会写成 *.local.shortcut，以免密钥被误提交。
 
 实现要点（踩过的坑，改动前先看这里）:
@@ -26,6 +27,7 @@
 from __future__ import annotations
 
 import argparse
+import itertools
 import os
 import plistlib
 import subprocess
@@ -34,8 +36,9 @@ import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-LOCAL_KEY_FILE = ROOT / ".deepseek-key"
+ENV_FILE = ROOT / ".env"
 SHORTCUT_NAME = "Fan-DeepSeek 翻译"
+_ID_SEQ = itertools.count(1)
 UNSIGNED = ROOT / f"{SHORTCUT_NAME}.unsigned.shortcut"
 SIGNED = ROOT / f"{SHORTCUT_NAME}.shortcut"
 VERSION = "0.0.1"
@@ -52,6 +55,23 @@ DEFAULT_API_URL = "https://api.deepseek.com/chat/completions"
 DEFAULT_MODEL = "deepseek-chat"
 TEMPERATURE = "1.3"
 
+# shortcuts/.env 模板：该文件不入库，密钥只留在本地
+ENV_TEMPLATE = """\
+# 生成快捷指令时读取的配置（本文件已在 .gitignore 中，只留在本地）
+# 填好后运行：python3 shortcuts/build-deepseek-translate.py --sign
+# 产物 Fan-DeepSeek 翻译.local.shortcut 已把 Key 写进快捷指令，导入时不用再填。
+# 修改本文件后重新生成 + 重新导入，即可更新本地那份快捷指令。
+
+# 运行快捷指令前要填上，获取地址 https://platform.deepseek.com/api_keys
+API_KEY=
+
+# 下面三项默认走 DeepSeek，换成其它 OpenAI 兼容服务时一起改
+API_URL=https://api.deepseek.com/chat/completions
+MODEL=deepseek-chat
+# 0~2，越小越稳定
+TEMPERATURE=1.3
+"""
+
 SYSTEM_PROMPT = (
     "你是专业翻译。如果输入内容主要是中文，就翻译成地道自然的英文；"
     "如果主要是英文或其他语言，就翻译成简体中文。"
@@ -63,7 +83,8 @@ SYSTEM_PROMPT = (
 # 序列化辅助
 # ---------------------------------------------------------------------------
 def new_id() -> str:
-    return str(uuid.uuid4()).upper()
+    """稳定生成动作 UUID：配置没变时重复生成得到逐字节一致的产物。"""
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"{SHORTCUT_NAME}-{next(_ID_SEQ)}")).upper()
 
 
 def text_token(template: str = "", variables: dict[str, dict] | None = None) -> dict:
@@ -199,7 +220,7 @@ def conditional(group: str, mode: int, **params) -> dict:
 # ---------------------------------------------------------------------------
 # 动作定义
 # ---------------------------------------------------------------------------
-def build_actions(api_key: str) -> list[dict]:
+def build_actions(config: dict[str, str]) -> list[dict]:
     key_id, url_id, model_id, ask_id = new_id(), new_id(), new_id(), new_id()
     request_id = new_id()
     choices_id, first_id, message_id, content_id = new_id(), new_id(), new_id(), new_id()
@@ -215,9 +236,9 @@ def build_actions(api_key: str) -> list[dict]:
             "（https://platform.deepseek.com/api_keys）。"
             "接口地址与模型默认使用 DeepSeek，换成其它 OpenAI 兼容服务时一并修改即可。"
         ),
-        text_action(api_key, key_id, "API Key"),
-        text_action(DEFAULT_API_URL, url_id, "接口地址"),
-        text_action(DEFAULT_MODEL, model_id, "模型"),
+        text_action(config["api_key"], key_id, "API Key"),
+        text_action(config["api_url"], url_id, "接口地址"),
+        text_action(config["model"], model_id, "模型"),
         action(
             "is.workflow.actions.ask",
             UUID=ask_id,
@@ -234,7 +255,7 @@ def build_actions(api_key: str) -> list[dict]:
             WFHTTPBodyType="JSON",
             WFJSONValues=dict_field([
                 json_text("model", output_ref(model_id, "模型")),
-                json_number("temperature", TEMPERATURE),
+                json_number("temperature", config["temperature"]),
                 json_bool("stream", False),
                 json_array("messages", [
                     {"WFItemType": 1, "WFValue": nested_dict_value([
@@ -291,17 +312,38 @@ def build_actions(api_key: str) -> list[dict]:
     return actions
 
 
-def resolve_api_key(cli_key: str | None) -> str:
-    """--api-key > DEEPSEEK_API_KEY > shortcuts/.deepseek-key > 占位符。"""
-    for candidate in (cli_key, os.environ.get("DEEPSEEK_API_KEY"),
-                      LOCAL_KEY_FILE.read_text().strip() if LOCAL_KEY_FILE.exists() else None):
-        if candidate and candidate.strip():
-            return candidate.strip()
-    return DEFAULT_API_KEY
+def load_env() -> dict[str, str]:
+    """读取 shortcuts/.env（不存在则生成一份模板），返回大写键名的配置字典。"""
+    if not ENV_FILE.exists():
+        ENV_FILE.write_text(ENV_TEMPLATE, encoding="utf-8")
+        print(f"已生成配置模板 {ENV_FILE.relative_to(ROOT.parent)}，填好 API_KEY 后再运行一次")
+
+    config: dict[str, str] = {}
+    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, _, value = line.partition("=")
+        value = value.strip().strip('"').strip("'")
+        if value:
+            config[name.strip().upper()] = value
+    return config
 
 
-def build_shortcut(api_key: str) -> dict:
-    actions = build_actions(api_key)
+def resolve_config(cli_key: str | None) -> dict[str, str]:
+    """优先级：--api-key > 环境变量 DEEPSEEK_API_KEY > shortcuts/.env > 内置默认值。"""
+    env = load_env()
+    api_key = cli_key or os.environ.get("DEEPSEEK_API_KEY") or env.get("API_KEY", "")
+    return {
+        "api_key": api_key.strip() or DEFAULT_API_KEY,
+        "api_url": env.get("API_URL", DEFAULT_API_URL),
+        "model": env.get("MODEL", DEFAULT_MODEL),
+        "temperature": env.get("TEMPERATURE", TEMPERATURE),
+    }
+
+
+def build_shortcut(config: dict[str, str]) -> dict:
+    actions = build_actions(config)
 
     # 导入时直接询问三个配置项，默认值即 DeepSeek；确认后仍可在快捷指令里随时修改。
     config = {
@@ -344,18 +386,22 @@ def main() -> int:
     parser.add_argument("--api-key", help="DeepSeek API Key，会输出到不提交仓库的 *.local.shortcut")
     args = parser.parse_args()
 
-    api_key = resolve_api_key(args.api_key)
-    if api_key != DEFAULT_API_KEY:
+    config = resolve_config(args.api_key)
+    has_real_key = config["api_key"] != DEFAULT_API_KEY
+    if has_real_key:
         unsigned_path = ROOT / f"{SHORTCUT_NAME}.local.unsigned.shortcut"
         signed_path = ROOT / f"{SHORTCUT_NAME}.local.shortcut"
     else:
         unsigned_path, signed_path = UNSIGNED, SIGNED
 
     with unsigned_path.open("wb") as fp:
-        plistlib.dump(build_shortcut(api_key), fp)
+        plistlib.dump(build_shortcut(config), fp)
     print(f"已生成 {unsigned_path.relative_to(ROOT.parent)}")
-    if api_key != DEFAULT_API_KEY:
+    if has_real_key:
         print("  ↑ 含真实 API Key，已在 .gitignore 中忽略，请勿提交")
+        print(f"  导入 {signed_path.relative_to(ROOT.parent)} 即可，配置已内置，导入时不用再填")
+    else:
+        print(f"  ↑ 还没有 API Key：把 Key 写进 {ENV_FILE.relative_to(ROOT.parent)} 后重新运行即可")
 
     if not args.sign:
         return 0
