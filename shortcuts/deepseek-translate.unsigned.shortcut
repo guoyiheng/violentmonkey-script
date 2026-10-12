@@ -11,7 +11,7 @@
 			<dict>
 				<key>WFCommentActionText</key>
 				<string>DeepSeek 中英互译：运行后输入要翻译的文字，中文译成英文，英文译成中文。
-首次使用请在下面「API Key」文本里填入自己的密钥（https://platform.deepseek.com/api_keys）。接口地址与模型默认使用 DeepSeek，换成其它 OpenAI 兼容服务时一并修改即可。</string>
+首次使用请把下面「API Key」文本换成自己的密钥（https://platform.deepseek.com/api_keys）。接口地址与模型默认使用 DeepSeek，换成其它 OpenAI 兼容服务时一并修改即可。</string>
 			</dict>
 		</dict>
 		<dict>
@@ -22,7 +22,7 @@
 				<key>CustomOutputName</key>
 				<string>API Key</string>
 				<key>UUID</key>
-				<string>AE3A3D84-982B-43B1-9592-D281CF04428E</string>
+				<string>1A050D10-78DC-49B5-B328-25F010E1979C</string>
 				<key>WFTextActionText</key>
 				<string>sk-在这里填入你的DeepSeek-API-Key</string>
 			</dict>
@@ -35,7 +35,7 @@
 				<key>CustomOutputName</key>
 				<string>接口地址</string>
 				<key>UUID</key>
-				<string>9E41E1B7-00DC-4677-9BBA-A3C879F10318</string>
+				<string>372192D5-B05C-4868-AE23-3450C4B4687E</string>
 				<key>WFTextActionText</key>
 				<string>https://api.deepseek.com/chat/completions</string>
 			</dict>
@@ -48,7 +48,7 @@
 				<key>CustomOutputName</key>
 				<string>模型</string>
 				<key>UUID</key>
-				<string>32FAE2B6-5AE2-4DE2-A379-ACFB9724C8DC</string>
+				<string>B78221F2-29B5-4CC8-98B6-1E32EFA7E9CA</string>
 				<key>WFTextActionText</key>
 				<string>deepseek-chat</string>
 			</dict>
@@ -59,196 +59,11 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>UUID</key>
-				<string>D93FC0C7-AE25-42C9-95A8-5C3C673D1EF9</string>
+				<string>69CC1DEA-DBCA-4C9C-B0CD-F51D4CB503E5</string>
 				<key>WFAskActionPrompt</key>
 				<string>输入要翻译的文字</string>
 				<key>WFInputType</key>
 				<string>Text</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.comment</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>WFCommentActionText</key>
-				<string>转义用户输入：换行折成空格、反斜杠和引号转义，避免破坏后面拼接的 JSON。</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.text.replace</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>UUID</key>
-				<string>EC3477C7-F721-4719-B38A-4D1DD9272E9E</string>
-				<key>WFInput</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{0, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>Provided Input</string>
-								<key>OutputUUID</key>
-								<string>D93FC0C7-AE25-42C9-95A8-5C3C673D1EF9</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-						</dict>
-						<key>string</key>
-						<string>￼</string>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
-				</dict>
-				<key>WFReplaceTextFind</key>
-				<string>[\r\n]+</string>
-				<key>WFReplaceTextRegularExpression</key>
-				<true/>
-				<key>WFReplaceTextReplace</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.text.replace</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>UUID</key>
-				<string>26AAFFCF-CA93-4604-BED8-705965A264CE</string>
-				<key>WFInput</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{0, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>Updated Text</string>
-								<key>OutputUUID</key>
-								<string>EC3477C7-F721-4719-B38A-4D1DD9272E9E</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-						</dict>
-						<key>string</key>
-						<string>￼</string>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
-				</dict>
-				<key>WFReplaceTextFind</key>
-				<string>\</string>
-				<key>WFReplaceTextRegularExpression</key>
-				<false/>
-				<key>WFReplaceTextReplace</key>
-				<string>\\</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.text.replace</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>UUID</key>
-				<string>5B560CE8-050C-4E0E-898F-6F2D52B88ACA</string>
-				<key>WFInput</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{0, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>Updated Text</string>
-								<key>OutputUUID</key>
-								<string>26AAFFCF-CA93-4604-BED8-705965A264CE</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-						</dict>
-						<key>string</key>
-						<string>￼</string>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
-				</dict>
-				<key>WFReplaceTextFind</key>
-				<string>"</string>
-				<key>WFReplaceTextRegularExpression</key>
-				<false/>
-				<key>WFReplaceTextReplace</key>
-				<string>\"</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.gettext</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>CustomOutputName</key>
-				<string>请求体</string>
-				<key>UUID</key>
-				<string>3F797EE9-CCA6-4CDA-8E4D-F88736BFCFFA</string>
-				<key>WFTextActionText</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{14, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>模型</string>
-								<key>OutputUUID</key>
-								<string>32FAE2B6-5AE2-4DE2-A379-ACFB9724C8DC</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-							<key>{233, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>Updated Text</string>
-								<key>OutputUUID</key>
-								<string>5B560CE8-050C-4E0E-898F-6F2D52B88ACA</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-						</dict>
-						<key>string</key>
-						<string>{
-  "model": "￼",
-  "messages": [
-    {
-      "role": "system",
-      "content": "你是专业翻译。如果输入内容主要是中文，就翻译成地道自然的英文；如果主要是英文或其他语言，就翻译成简体中文。只输出译文本身，不要解释、不要加引号、不要保留原文、不要添加任何前后缀，保留原文语气。"
-    },
-    {
-      "role": "user",
-      "content": "￼"
-    }
-  ],
-  "temperature": 1.3,
-  "stream": false
-}</string>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
-				</dict>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.comment</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>WFCommentActionText</key>
-				<string>调用大模型接口（请求体走 File 方式提交，避免嵌套 JSON 在编辑器里被改写）。</string>
 			</dict>
 		</dict>
 		<dict>
@@ -263,19 +78,9 @@
 				<key>ShowHeaders</key>
 				<true/>
 				<key>UUID</key>
-				<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
-				<key>WFFormValues</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>WFDictionaryFieldValueItems</key>
-						<array/>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFDictionaryFieldValue</string>
-				</dict>
+				<string>7655269D-FB89-4527-9414-01238BE8915D</string>
 				<key>WFHTTPBodyType</key>
-				<string>File</string>
+				<string>JSON</string>
 				<key>WFHTTPHeaders</key>
 				<dict>
 					<key>Value</key>
@@ -306,7 +111,7 @@
 												<key>OutputName</key>
 												<string>API Key</string>
 												<key>OutputUUID</key>
-												<string>AE3A3D84-982B-43B1-9592-D281CF04428E</string>
+												<string>1A050D10-78DC-49B5-B328-25F010E1979C</string>
 												<key>Type</key>
 												<string>ActionOutput</string>
 											</dict>
@@ -349,27 +154,267 @@
 				</dict>
 				<key>WFHTTPMethod</key>
 				<string>POST</string>
-				<key>WFRequestVariable</key>
+				<key>WFJSONValues</key>
 				<dict>
 					<key>Value</key>
 					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{0, 1}</key>
+						<key>WFDictionaryFieldValueItems</key>
+						<array>
 							<dict>
-								<key>OutputName</key>
-								<string>请求体</string>
-								<key>OutputUUID</key>
-								<string>3F797EE9-CCA6-4CDA-8E4D-F88736BFCFFA</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
+								<key>WFItemType</key>
+								<integer>0</integer>
+								<key>WFKey</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>string</key>
+										<string>model</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
+								<key>WFValue</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>attachmentsByRange</key>
+										<dict>
+											<key>{0, 1}</key>
+											<dict>
+												<key>OutputName</key>
+												<string>模型</string>
+												<key>OutputUUID</key>
+												<string>B78221F2-29B5-4CC8-98B6-1E32EFA7E9CA</string>
+												<key>Type</key>
+												<string>ActionOutput</string>
+											</dict>
+										</dict>
+										<key>string</key>
+										<string>￼</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
 							</dict>
-						</dict>
-						<key>string</key>
-						<string>￼</string>
+							<dict>
+								<key>WFItemType</key>
+								<integer>3</integer>
+								<key>WFKey</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>string</key>
+										<string>temperature</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
+								<key>WFValue</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>string</key>
+										<string>1.3</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>WFItemType</key>
+								<integer>4</integer>
+								<key>WFKey</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>string</key>
+										<string>stream</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
+								<key>WFValue</key>
+								<dict>
+									<key>Value</key>
+									<false/>
+									<key>WFSerializationType</key>
+									<string>WFBooleanSubstitutableState</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>WFItemType</key>
+								<integer>2</integer>
+								<key>WFKey</key>
+								<dict>
+									<key>Value</key>
+									<dict>
+										<key>string</key>
+										<string>messages</string>
+									</dict>
+									<key>WFSerializationType</key>
+									<string>WFTextTokenString</string>
+								</dict>
+								<key>WFValue</key>
+								<dict>
+									<key>Value</key>
+									<array>
+										<dict>
+											<key>WFItemType</key>
+											<integer>1</integer>
+											<key>WFValue</key>
+											<dict>
+												<key>Value</key>
+												<dict>
+													<key>Value</key>
+													<dict>
+														<key>WFDictionaryFieldValueItems</key>
+														<array>
+															<dict>
+																<key>WFItemType</key>
+																<integer>0</integer>
+																<key>WFKey</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>role</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+																<key>WFValue</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>system</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+															</dict>
+															<dict>
+																<key>WFItemType</key>
+																<integer>0</integer>
+																<key>WFKey</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>content</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+																<key>WFValue</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>你是专业翻译。如果输入内容主要是中文，就翻译成地道自然的英文；如果主要是英文或其他语言，就翻译成简体中文。只输出译文本身，不要解释、不要加引号、不要保留原文、不要添加任何前后缀，保留原文语气。</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+															</dict>
+														</array>
+													</dict>
+													<key>WFSerializationType</key>
+													<string>WFDictionaryFieldValue</string>
+												</dict>
+												<key>WFSerializationType</key>
+												<string>WFDictionaryFieldValue</string>
+											</dict>
+										</dict>
+										<dict>
+											<key>WFItemType</key>
+											<integer>1</integer>
+											<key>WFValue</key>
+											<dict>
+												<key>Value</key>
+												<dict>
+													<key>Value</key>
+													<dict>
+														<key>WFDictionaryFieldValueItems</key>
+														<array>
+															<dict>
+																<key>WFItemType</key>
+																<integer>0</integer>
+																<key>WFKey</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>role</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+																<key>WFValue</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>user</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+															</dict>
+															<dict>
+																<key>WFItemType</key>
+																<integer>0</integer>
+																<key>WFKey</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>string</key>
+																		<string>content</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+																<key>WFValue</key>
+																<dict>
+																	<key>Value</key>
+																	<dict>
+																		<key>attachmentsByRange</key>
+																		<dict>
+																			<key>{0, 1}</key>
+																			<dict>
+																				<key>OutputName</key>
+																				<string>Provided Input</string>
+																				<key>OutputUUID</key>
+																				<string>69CC1DEA-DBCA-4C9C-B0CD-F51D4CB503E5</string>
+																				<key>Type</key>
+																				<string>ActionOutput</string>
+																			</dict>
+																		</dict>
+																		<key>string</key>
+																		<string>￼</string>
+																	</dict>
+																	<key>WFSerializationType</key>
+																	<string>WFTextTokenString</string>
+																</dict>
+															</dict>
+														</array>
+													</dict>
+													<key>WFSerializationType</key>
+													<string>WFDictionaryFieldValue</string>
+												</dict>
+												<key>WFSerializationType</key>
+												<string>WFDictionaryFieldValue</string>
+											</dict>
+										</dict>
+									</array>
+									<key>WFSerializationType</key>
+									<string>WFArrayParameterState</string>
+								</dict>
+							</dict>
+						</array>
 					</dict>
 					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
+					<string>WFDictionaryFieldValue</string>
 				</dict>
 				<key>WFURL</key>
 				<dict>
@@ -382,7 +427,7 @@
 								<key>OutputName</key>
 								<string>接口地址</string>
 								<key>OutputUUID</key>
-								<string>9E41E1B7-00DC-4677-9BBA-A3C879F10318</string>
+								<string>372192D5-B05C-4868-AE23-3450C4B4687E</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -397,13 +442,56 @@
 		</dict>
 		<dict>
 			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.comment</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>WFCommentActionText</key>
+				<string>响应里没有 choices 就说明调用失败，直接把原始响应展示出来，方便排查。</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.conditional</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>GroupingIdentifier</key>
+				<string>E43EF18E-EF0E-4A07-BA09-129D6B7CE20F</string>
+				<key>WFCondition</key>
+				<integer>99</integer>
+				<key>WFConditionalActionString</key>
+				<string>choices</string>
+				<key>WFControlFlowMode</key>
+				<integer>0</integer>
+				<key>WFInput</key>
+				<dict>
+					<key>Type</key>
+					<string>Variable</string>
+					<key>Variable</key>
+					<dict>
+						<key>Value</key>
+						<dict>
+							<key>OutputName</key>
+							<string>响应</string>
+							<key>OutputUUID</key>
+							<string>7655269D-FB89-4527-9414-01238BE8915D</string>
+							<key>Type</key>
+							<string>ActionOutput</string>
+						</dict>
+						<key>WFSerializationType</key>
+						<string>WFTextTokenAttachment</string>
+					</dict>
+				</dict>
+			</dict>
+		</dict>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
 			<string>is.workflow.actions.getvalueforkey</string>
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>CustomOutputName</key>
 				<string>候选列表</string>
 				<key>UUID</key>
-				<string>38C3CBB8-3A12-4DBD-AF73-95ECF3D1688F</string>
+				<string>0CDAB3DE-8267-486E-9CDC-A0C5DDD1408A</string>
 				<key>WFDictionaryKey</key>
 				<string>choices</string>
 				<key>WFInput</key>
@@ -413,7 +501,7 @@
 						<key>OutputName</key>
 						<string>响应</string>
 						<key>OutputUUID</key>
-						<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
+						<string>7655269D-FB89-4527-9414-01238BE8915D</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -430,7 +518,7 @@
 				<key>CustomOutputName</key>
 				<string>首个候选</string>
 				<key>UUID</key>
-				<string>83CF3330-8725-4912-B89A-7D532669747A</string>
+				<string>A98FA43C-BF53-439C-91D3-7C003AEFEA1C</string>
 				<key>WFInput</key>
 				<dict>
 					<key>Value</key>
@@ -438,7 +526,7 @@
 						<key>OutputName</key>
 						<string>候选列表</string>
 						<key>OutputUUID</key>
-						<string>38C3CBB8-3A12-4DBD-AF73-95ECF3D1688F</string>
+						<string>0CDAB3DE-8267-486E-9CDC-A0C5DDD1408A</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -455,7 +543,7 @@
 				<key>CustomOutputName</key>
 				<string>消息对象</string>
 				<key>UUID</key>
-				<string>1781204D-2FF8-4ED3-8E1B-C5A34A5D8095</string>
+				<string>F91A4654-B306-4801-9C2C-66ED10EB5464</string>
 				<key>WFDictionaryKey</key>
 				<string>message</string>
 				<key>WFInput</key>
@@ -465,7 +553,7 @@
 						<key>OutputName</key>
 						<string>首个候选</string>
 						<key>OutputUUID</key>
-						<string>83CF3330-8725-4912-B89A-7D532669747A</string>
+						<string>A98FA43C-BF53-439C-91D3-7C003AEFEA1C</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -482,7 +570,7 @@
 				<key>CustomOutputName</key>
 				<string>译文</string>
 				<key>UUID</key>
-				<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
+				<string>D3794140-599B-444D-B280-00F48B6401C5</string>
 				<key>WFDictionaryKey</key>
 				<string>content</string>
 				<key>WFInput</key>
@@ -492,100 +580,13 @@
 						<key>OutputName</key>
 						<string>消息对象</string>
 						<key>OutputUUID</key>
-						<string>1781204D-2FF8-4ED3-8E1B-C5A34A5D8095</string>
+						<string>F91A4654-B306-4801-9C2C-66ED10EB5464</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
 					<key>WFSerializationType</key>
 					<string>WFTextTokenAttachment</string>
 				</dict>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.comment</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>WFCommentActionText</key>
-				<string>取不到译文时提示排查，正常情况下直接展示译文。</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.conditional</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>GroupingIdentifier</key>
-				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
-				<key>WFCondition</key>
-				<integer>101</integer>
-				<key>WFControlFlowMode</key>
-				<integer>0</integer>
-				<key>WFInput</key>
-				<dict>
-					<key>Type</key>
-					<string>Variable</string>
-					<key>Variable</key>
-					<dict>
-						<key>Value</key>
-						<dict>
-							<key>OutputName</key>
-							<string>译文</string>
-							<key>OutputUUID</key>
-							<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
-							<key>Type</key>
-							<string>ActionOutput</string>
-						</dict>
-						<key>WFSerializationType</key>
-						<string>WFTextTokenAttachment</string>
-					</dict>
-				</dict>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.alert</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>WFAlertActionCancelButtonShown</key>
-				<false/>
-				<key>WFAlertActionMessage</key>
-				<dict>
-					<key>Value</key>
-					<dict>
-						<key>attachmentsByRange</key>
-						<dict>
-							<key>{34, 1}</key>
-							<dict>
-								<key>OutputName</key>
-								<string>响应</string>
-								<key>OutputUUID</key>
-								<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-						</dict>
-						<key>string</key>
-						<string>没有拿到译文，请检查网络或 API Key 是否正确。
-
-接口返回：￼</string>
-					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenString</string>
-				</dict>
-				<key>WFAlertActionTitle</key>
-				<string>翻译失败</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>WFWorkflowActionIdentifier</key>
-			<string>is.workflow.actions.conditional</string>
-			<key>WFWorkflowActionParameters</key>
-			<dict>
-				<key>GroupingIdentifier</key>
-				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
-				<key>WFControlFlowMode</key>
-				<integer>1</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -604,7 +605,7 @@
 								<key>OutputName</key>
 								<string>译文</string>
 								<key>OutputUUID</key>
-								<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
+								<string>D3794140-599B-444D-B280-00F48B6401C5</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -623,7 +624,58 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>GroupingIdentifier</key>
-				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
+				<string>E43EF18E-EF0E-4A07-BA09-129D6B7CE20F</string>
+				<key>WFControlFlowMode</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.alert</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>WFAlertActionCancelButtonShown</key>
+				<false/>
+				<key>WFAlertActionMessage</key>
+				<dict>
+					<key>Value</key>
+					<dict>
+						<key>attachmentsByRange</key>
+						<dict>
+							<key>{34, 1}</key>
+							<dict>
+								<key>Value</key>
+								<dict>
+									<key>OutputName</key>
+									<string>响应</string>
+									<key>OutputUUID</key>
+									<string>7655269D-FB89-4527-9414-01238BE8915D</string>
+									<key>Type</key>
+									<string>ActionOutput</string>
+								</dict>
+								<key>WFSerializationType</key>
+								<string>WFTextTokenAttachment</string>
+							</dict>
+						</dict>
+						<key>string</key>
+						<string>没有拿到译文，请检查网络、API Key 或接口地址。
+
+接口返回：￼</string>
+					</dict>
+					<key>WFSerializationType</key>
+					<string>WFTextTokenString</string>
+				</dict>
+				<key>WFAlertActionTitle</key>
+				<string>翻译失败</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.conditional</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>GroupingIdentifier</key>
+				<string>E43EF18E-EF0E-4A07-BA09-129D6B7CE20F</string>
 				<key>WFControlFlowMode</key>
 				<integer>2</integer>
 			</dict>
