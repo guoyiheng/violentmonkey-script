@@ -21,39 +21,6 @@
 
 ---
 
-## Apple 快捷指令
-
-| 快捷指令 | 说明 | 下载 |
-| :--- | :--- | :--- |
-| **Fan-DeepSeek 翻译** | 运行后弹出输入框，中文译成英文、英文译成中文；填入自己的 DeepSeek API Key 即可使用 | [下载 .shortcut](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/shortcuts/Fan-DeepSeek%20%E7%BF%BB%E8%AF%91.shortcut) |
-
-### 安装与使用
-
-1. 双击 `shortcuts/Fan-DeepSeek 翻译.shortcut` 导入快捷指令（文件名即快捷指令名，iOS 可从「文件」打开或 AirDrop 到手机，并先在「设置 → 快捷指令」中允许「不受信任的快捷指令」）；
-2. 导入时会弹出配置向导，直接填写 `API Key`、`接口地址`、`模型`（默认值已是 DeepSeek，不改直接确认即可）；也可以在导入后打开快捷指令随时修改这三个文本动作；如果已经用 `shortcuts/.env` 内置了配置（见下），这里直接确认即可；
-3. 运行快捷指令，输入要翻译的文字即可。
-
-默认走 DeepSeek（`deepseek-chat`，`temperature 1.3`）。换成其它 OpenAI 兼容服务时，改 `API Key`、`接口地址`、`模型` 三个文本动作即可。API Key [获取地址](https://platform.deepseek.com/api_keys)。
-
-改动后重新生成：`python3 shortcuts/build-deepseek-translate.py --sign`。
-
-想固定 Key、以后更新不用重复填：把配置写进 `shortcuts/.env`（已 gitignore，首次生成会自动创建模板）再重新生成即可：
-
-```bash
-# shortcuts/.env
-API_KEY=sk-你的key
-API_URL=https://api.deepseek.com/chat/completions
-MODEL=deepseek-chat
-TEMPERATURE=1.3
-```
-
-```bash
-python3 shortcuts/build-deepseek-translate.py --sign
-```
-
-带真实 Key 的产物会输出到 `shortcuts/Fan-DeepSeek 翻译.local.shortcut`（同样已 gitignore，不会进仓库），导入这个文件就行，导入时不用再填 Key；`--api-key sk-xxx` 和 `DEEPSEEK_API_KEY` 环境变量也可以（优先级：`--api-key` > 环境变量 > `.env`）。改完 `.env` 重新生成并重新导入，就能更新本地那份快捷指令。
-
----
 
 ## 项目目录结构
 
@@ -70,11 +37,6 @@ violentmonkey-script/
 │   ├── baidu-pan.user.js                # 网盘自动转存脚本
 │   ├── db-vr.user.js                    # DB VR 筛选脚本
 │   └── youpu.user.js                    # 有谱伴奏助手脚本
-├── shortcuts/                            # Apple 快捷指令目录
-│   ├── Fan-DeepSeek 翻译.shortcut      # 可直接导入的签名文件（文件名即快捷指令名）
-│   ├── Fan-DeepSeek 翻译.unsigned.shortcut # 未签名源文件
-│   ├── .env                              # 本地配置（API Key / 接口 / 模型，已 gitignore）
-│   └── build-deepseek-translate.py      # 快捷指令生成脚本
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束
 └── .gitignore                            # Git 忽略文件
