@@ -30,10 +30,10 @@
 ### 安装与使用
 
 1. 双击 `shortcuts/deepseek-translate.shortcut` 导入快捷指令（iOS 可从「文件」打开或 AirDrop 到手机，并先在「设置 → 快捷指令」中允许「不受信任的快捷指令」）；
-2. 在快捷指令里把第一个文本动作 `API Key` 换成自己的密钥（[获取地址](https://platform.deepseek.com/api_keys)）；
+2. 导入时会弹出配置向导，直接填写 `API Key`、`接口地址`、`模型`（默认值已是 DeepSeek，不改直接确认即可）；也可以在导入后打开快捷指令随时修改这三个文本动作；
 3. 运行快捷指令，输入要翻译的文字即可。
 
-默认走 DeepSeek（`deepseek-chat`，`temperature 1.3`）。想换成其它 OpenAI 兼容服务，修改 `API Key`、`接口地址`、`模型` 三个文本动作即可。
+默认走 DeepSeek（`deepseek-chat`，`temperature 1.3`）。换成其它 OpenAI 兼容服务时，改 `API Key`、`接口地址`、`模型` 三个文本动作即可。API Key [获取地址](https://platform.deepseek.com/api_keys)。
 
 改动后重新生成：`python3 shortcuts/build-deepseek-translate.py --sign`。
 

@@ -6,8 +6,8 @@
     python3 shortcuts/build-deepseek-translate.py --sign     # 生成并调用 shortcuts sign 签名
 
 说明:
-    生成结果里最上面几个文本动作即为可配置项（API Key / 接口地址 / 模型），
-    也可以在这里改完常量后重新运行本脚本生成新的 .shortcut 文件。
+    导入快捷指令时会直接询问 API Key / 接口地址 / 模型，默认值即 DeepSeek，可以当场改成其它
+    OpenAI 兼容服务；导入后在快捷指令里也能随时修改这三个文本动作，或改这里再重新生成。
     签名后的文件在 iOS/macOS 上双击即可导入（iOS 需在设置中允许「不受信任的快捷指令」）。
 """
 
@@ -285,15 +285,34 @@ def build_actions() -> list[dict]:
 
 
 def build_shortcut() -> dict:
+    actions = build_actions()
+
+    # 导入时直接询问三个配置项，默认值即 DeepSeek；确认后仍可在快捷指令里随时修改。
+    config = {
+        "API Key": "DeepSeek API Key（留空可稍后在快捷指令里填写）",
+        "接口地址": "接口地址（任意 OpenAI 兼容服务）",
+        "模型": "模型名称",
+    }
+    questions = []
+    for index, item in enumerate(actions):
+        name = item["WFWorkflowActionParameters"].get("CustomOutputName")
+        if name in config:
+            questions.append({
+                "ActionIndex": index,
+                "ParameterKey": "WFTextActionText",
+                "Text": config[name],
+                "DefaultValue": item["WFWorkflowActionParameters"]["WFTextActionText"],
+            })
+
     return {
-        "WFWorkflowActions": build_actions(),
+        "WFWorkflowActions": actions,
         "WFWorkflowClientVersion": "2700.0.4",
         "WFWorkflowHasOutputFallback": False,
         "WFWorkflowIcon": {
             "WFWorkflowIconGlyphNumber": ICON_GLYPH,
             "WFWorkflowIconStartColor": ICON_COLOR,
         },
-        "WFWorkflowImportQuestions": [],
+        "WFWorkflowImportQuestions": questions,
         "WFWorkflowInputContentItemClasses": [],
         "WFWorkflowMinimumClientVersion": 900,
         "WFWorkflowMinimumClientVersionString": "900",

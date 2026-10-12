@@ -22,7 +22,7 @@
 				<key>CustomOutputName</key>
 				<string>API Key</string>
 				<key>UUID</key>
-				<string>4DA0202D-9FB8-43B9-9A2B-43A67A6B7A09</string>
+				<string>AE3A3D84-982B-43B1-9592-D281CF04428E</string>
 				<key>WFTextActionText</key>
 				<string>sk-在这里填入你的DeepSeek-API-Key</string>
 			</dict>
@@ -35,7 +35,7 @@
 				<key>CustomOutputName</key>
 				<string>接口地址</string>
 				<key>UUID</key>
-				<string>8DD92AF3-6926-4681-BB93-A7031D86B260</string>
+				<string>9E41E1B7-00DC-4677-9BBA-A3C879F10318</string>
 				<key>WFTextActionText</key>
 				<string>https://api.deepseek.com/chat/completions</string>
 			</dict>
@@ -48,7 +48,7 @@
 				<key>CustomOutputName</key>
 				<string>模型</string>
 				<key>UUID</key>
-				<string>BA3CAA28-DE35-45E7-A82A-9D2A5D6B264E</string>
+				<string>32FAE2B6-5AE2-4DE2-A379-ACFB9724C8DC</string>
 				<key>WFTextActionText</key>
 				<string>deepseek-chat</string>
 			</dict>
@@ -59,7 +59,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>UUID</key>
-				<string>8046101C-E7E6-40DE-9B0F-493F3D5C0DD2</string>
+				<string>D93FC0C7-AE25-42C9-95A8-5C3C673D1EF9</string>
 				<key>WFAskActionPrompt</key>
 				<string>输入要翻译的文字</string>
 				<key>WFInputType</key>
@@ -81,7 +81,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>UUID</key>
-				<string>F82F3E80-F89D-45CE-8A31-F5122E58A1A3</string>
+				<string>EC3477C7-F721-4719-B38A-4D1DD9272E9E</string>
 				<key>WFInput</key>
 				<dict>
 					<key>Value</key>
@@ -93,7 +93,7 @@
 								<key>OutputName</key>
 								<string>Provided Input</string>
 								<key>OutputUUID</key>
-								<string>8046101C-E7E6-40DE-9B0F-493F3D5C0DD2</string>
+								<string>D93FC0C7-AE25-42C9-95A8-5C3C673D1EF9</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -118,7 +118,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>UUID</key>
-				<string>1C197397-3658-4C03-9E60-1CFB8F8E2BED</string>
+				<string>26AAFFCF-CA93-4604-BED8-705965A264CE</string>
 				<key>WFInput</key>
 				<dict>
 					<key>Value</key>
@@ -130,7 +130,7 @@
 								<key>OutputName</key>
 								<string>Updated Text</string>
 								<key>OutputUUID</key>
-								<string>F82F3E80-F89D-45CE-8A31-F5122E58A1A3</string>
+								<string>EC3477C7-F721-4719-B38A-4D1DD9272E9E</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -155,7 +155,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>UUID</key>
-				<string>A5070CAC-71B3-4004-BD75-53607AC2787E</string>
+				<string>5B560CE8-050C-4E0E-898F-6F2D52B88ACA</string>
 				<key>WFInput</key>
 				<dict>
 					<key>Value</key>
@@ -167,7 +167,7 @@
 								<key>OutputName</key>
 								<string>Updated Text</string>
 								<key>OutputUUID</key>
-								<string>1C197397-3658-4C03-9E60-1CFB8F8E2BED</string>
+								<string>26AAFFCF-CA93-4604-BED8-705965A264CE</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -194,7 +194,7 @@
 				<key>CustomOutputName</key>
 				<string>请求体</string>
 				<key>UUID</key>
-				<string>66792A21-4677-4F2D-9BF6-BC0D332F2B6F</string>
+				<string>3F797EE9-CCA6-4CDA-8E4D-F88736BFCFFA</string>
 				<key>WFTextActionText</key>
 				<dict>
 					<key>Value</key>
@@ -206,7 +206,7 @@
 								<key>OutputName</key>
 								<string>模型</string>
 								<key>OutputUUID</key>
-								<string>BA3CAA28-DE35-45E7-A82A-9D2A5D6B264E</string>
+								<string>32FAE2B6-5AE2-4DE2-A379-ACFB9724C8DC</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -215,7 +215,7 @@
 								<key>OutputName</key>
 								<string>Updated Text</string>
 								<key>OutputUUID</key>
-								<string>A5070CAC-71B3-4004-BD75-53607AC2787E</string>
+								<string>5B560CE8-050C-4E0E-898F-6F2D52B88ACA</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -263,7 +263,7 @@
 				<key>ShowHeaders</key>
 				<true/>
 				<key>UUID</key>
-				<string>F41C86D6-74DD-41C2-8CA7-710B0F62AC43</string>
+				<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
 				<key>WFFormValues</key>
 				<dict>
 					<key>Value</key>
@@ -306,7 +306,7 @@
 												<key>OutputName</key>
 												<string>API Key</string>
 												<key>OutputUUID</key>
-												<string>4DA0202D-9FB8-43B9-9A2B-43A67A6B7A09</string>
+												<string>AE3A3D84-982B-43B1-9592-D281CF04428E</string>
 												<key>Type</key>
 												<string>ActionOutput</string>
 											</dict>
@@ -360,7 +360,7 @@
 								<key>OutputName</key>
 								<string>请求体</string>
 								<key>OutputUUID</key>
-								<string>66792A21-4677-4F2D-9BF6-BC0D332F2B6F</string>
+								<string>3F797EE9-CCA6-4CDA-8E4D-F88736BFCFFA</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -382,7 +382,7 @@
 								<key>OutputName</key>
 								<string>接口地址</string>
 								<key>OutputUUID</key>
-								<string>8DD92AF3-6926-4681-BB93-A7031D86B260</string>
+								<string>9E41E1B7-00DC-4677-9BBA-A3C879F10318</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -403,7 +403,7 @@
 				<key>CustomOutputName</key>
 				<string>候选列表</string>
 				<key>UUID</key>
-				<string>F0C97EBA-E8B8-4242-84F6-7008DEC49688</string>
+				<string>38C3CBB8-3A12-4DBD-AF73-95ECF3D1688F</string>
 				<key>WFDictionaryKey</key>
 				<string>choices</string>
 				<key>WFInput</key>
@@ -413,7 +413,7 @@
 						<key>OutputName</key>
 						<string>响应</string>
 						<key>OutputUUID</key>
-						<string>F41C86D6-74DD-41C2-8CA7-710B0F62AC43</string>
+						<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -430,7 +430,7 @@
 				<key>CustomOutputName</key>
 				<string>首个候选</string>
 				<key>UUID</key>
-				<string>AE7A8C24-AC93-4231-98FE-20308E359E6B</string>
+				<string>83CF3330-8725-4912-B89A-7D532669747A</string>
 				<key>WFInput</key>
 				<dict>
 					<key>Value</key>
@@ -438,7 +438,7 @@
 						<key>OutputName</key>
 						<string>候选列表</string>
 						<key>OutputUUID</key>
-						<string>F0C97EBA-E8B8-4242-84F6-7008DEC49688</string>
+						<string>38C3CBB8-3A12-4DBD-AF73-95ECF3D1688F</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -455,7 +455,7 @@
 				<key>CustomOutputName</key>
 				<string>消息对象</string>
 				<key>UUID</key>
-				<string>AD1F5B61-2EFC-4264-A5B4-672DE2B35FBB</string>
+				<string>1781204D-2FF8-4ED3-8E1B-C5A34A5D8095</string>
 				<key>WFDictionaryKey</key>
 				<string>message</string>
 				<key>WFInput</key>
@@ -465,7 +465,7 @@
 						<key>OutputName</key>
 						<string>首个候选</string>
 						<key>OutputUUID</key>
-						<string>AE7A8C24-AC93-4231-98FE-20308E359E6B</string>
+						<string>83CF3330-8725-4912-B89A-7D532669747A</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -482,7 +482,7 @@
 				<key>CustomOutputName</key>
 				<string>译文</string>
 				<key>UUID</key>
-				<string>71BB7A46-1C38-47EC-9BAE-3475558023F6</string>
+				<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
 				<key>WFDictionaryKey</key>
 				<string>content</string>
 				<key>WFInput</key>
@@ -492,7 +492,7 @@
 						<key>OutputName</key>
 						<string>消息对象</string>
 						<key>OutputUUID</key>
-						<string>AD1F5B61-2EFC-4264-A5B4-672DE2B35FBB</string>
+						<string>1781204D-2FF8-4ED3-8E1B-C5A34A5D8095</string>
 						<key>Type</key>
 						<string>ActionOutput</string>
 					</dict>
@@ -516,7 +516,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>GroupingIdentifier</key>
-				<string>DEEAF6D0-282A-42F5-BF7F-8023245BAF7E</string>
+				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
 				<key>WFCondition</key>
 				<integer>101</integer>
 				<key>WFControlFlowMode</key>
@@ -532,7 +532,7 @@
 							<key>OutputName</key>
 							<string>译文</string>
 							<key>OutputUUID</key>
-							<string>71BB7A46-1C38-47EC-9BAE-3475558023F6</string>
+							<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
 							<key>Type</key>
 							<string>ActionOutput</string>
 						</dict>
@@ -560,7 +560,7 @@
 								<key>OutputName</key>
 								<string>响应</string>
 								<key>OutputUUID</key>
-								<string>F41C86D6-74DD-41C2-8CA7-710B0F62AC43</string>
+								<string>11155FFA-F35B-45AB-BCFD-14CF4AA7E7C0</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -583,7 +583,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>GroupingIdentifier</key>
-				<string>DEEAF6D0-282A-42F5-BF7F-8023245BAF7E</string>
+				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
 				<key>WFControlFlowMode</key>
 				<integer>1</integer>
 			</dict>
@@ -604,7 +604,7 @@
 								<key>OutputName</key>
 								<string>译文</string>
 								<key>OutputUUID</key>
-								<string>71BB7A46-1C38-47EC-9BAE-3475558023F6</string>
+								<string>A2FBA5AF-95AE-4E89-AD5D-AD16B1C377C2</string>
 								<key>Type</key>
 								<string>ActionOutput</string>
 							</dict>
@@ -623,7 +623,7 @@
 			<key>WFWorkflowActionParameters</key>
 			<dict>
 				<key>GroupingIdentifier</key>
-				<string>DEEAF6D0-282A-42F5-BF7F-8023245BAF7E</string>
+				<string>F7B32DC0-8AC7-4F5E-A074-4818840A8909</string>
 				<key>WFControlFlowMode</key>
 				<integer>2</integer>
 			</dict>
@@ -641,7 +641,38 @@
 		<integer>946986751</integer>
 	</dict>
 	<key>WFWorkflowImportQuestions</key>
-	<array/>
+	<array>
+		<dict>
+			<key>ActionIndex</key>
+			<integer>1</integer>
+			<key>DefaultValue</key>
+			<string>sk-在这里填入你的DeepSeek-API-Key</string>
+			<key>ParameterKey</key>
+			<string>WFTextActionText</string>
+			<key>Text</key>
+			<string>DeepSeek API Key（留空可稍后在快捷指令里填写）</string>
+		</dict>
+		<dict>
+			<key>ActionIndex</key>
+			<integer>2</integer>
+			<key>DefaultValue</key>
+			<string>https://api.deepseek.com/chat/completions</string>
+			<key>ParameterKey</key>
+			<string>WFTextActionText</string>
+			<key>Text</key>
+			<string>接口地址（任意 OpenAI 兼容服务）</string>
+		</dict>
+		<dict>
+			<key>ActionIndex</key>
+			<integer>3</integer>
+			<key>DefaultValue</key>
+			<string>deepseek-chat</string>
+			<key>ParameterKey</key>
+			<string>WFTextActionText</string>
+			<key>Text</key>
+			<string>模型名称</string>
+		</dict>
+	</array>
 	<key>WFWorkflowInputContentItemClasses</key>
 	<array/>
 	<key>WFWorkflowMinimumClientVersion</key>
