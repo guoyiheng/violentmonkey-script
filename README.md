@@ -21,6 +21,24 @@
 
 ---
 
+## Apple 快捷指令
+
+| 快捷指令 | 说明 | 下载 |
+| :--- | :--- | :--- |
+| **DeepSeek 翻译** | 运行后弹出输入框，中文译成英文、英文译成中文；填入自己的 DeepSeek API Key 即可使用 | [下载 .shortcut](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/shortcuts/deepseek-translate.shortcut) |
+
+### 安装与使用
+
+1. 双击 `shortcuts/deepseek-translate.shortcut` 导入快捷指令（iOS 可从「文件」打开或 AirDrop 到手机，并先在「设置 → 快捷指令」中允许「不受信任的快捷指令」）；
+2. 在快捷指令里把第一个文本动作 `API Key` 换成自己的密钥（[获取地址](https://platform.deepseek.com/api_keys)）；
+3. 运行快捷指令，输入要翻译的文字即可。
+
+默认走 DeepSeek（`deepseek-chat`，`temperature 1.3`）。想换成其它 OpenAI 兼容服务，修改 `API Key`、`接口地址`、`模型` 三个文本动作即可。
+
+改动后重新生成：`python3 shortcuts/build-deepseek-translate.py --sign`。
+
+---
+
 ## 项目目录结构
 
 ```text
@@ -36,6 +54,10 @@ violentmonkey-script/
 │   ├── baidu-pan.user.js                # 网盘自动转存脚本
 │   ├── db-vr.user.js                    # DB VR 筛选脚本
 │   └── youpu.user.js                    # 有谱伴奏助手脚本
+├── shortcuts/                            # Apple 快捷指令目录
+│   ├── deepseek-translate.shortcut      # 可直接导入的签名文件
+│   ├── deepseek-translate.unsigned.shortcut # 未签名源文件
+│   └── build-deepseek-translate.py      # 快捷指令生成脚本
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束
 └── .gitignore                            # Git 忽略文件
