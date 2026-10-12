@@ -25,11 +25,11 @@
 
 | 快捷指令 | 说明 | 下载 |
 | :--- | :--- | :--- |
-| **DeepSeek 翻译** | 运行后弹出输入框，中文译成英文、英文译成中文；填入自己的 DeepSeek API Key 即可使用 | [下载 .shortcut](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/shortcuts/deepseek-translate.shortcut) |
+| **Fan-DeepSeek 翻译** | 运行后弹出输入框，中文译成英文、英文译成中文；填入自己的 DeepSeek API Key 即可使用 | [下载 .shortcut](https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/shortcuts/Fan-DeepSeek%20%E7%BF%BB%E8%AF%91.shortcut) |
 
 ### 安装与使用
 
-1. 双击 `shortcuts/deepseek-translate.shortcut` 导入快捷指令（iOS 可从「文件」打开或 AirDrop 到手机，并先在「设置 → 快捷指令」中允许「不受信任的快捷指令」）；
+1. 双击 `shortcuts/Fan-DeepSeek 翻译.shortcut` 导入快捷指令（文件名即快捷指令名，iOS 可从「文件」打开或 AirDrop 到手机，并先在「设置 → 快捷指令」中允许「不受信任的快捷指令」）；
 2. 导入时会弹出配置向导，直接填写 `API Key`、`接口地址`、`模型`（默认值已是 DeepSeek，不改直接确认即可）；也可以在导入后打开快捷指令随时修改这三个文本动作；
 3. 运行快捷指令，输入要翻译的文字即可。
 
@@ -44,7 +44,7 @@ printf '%s' 'sk-你的key' > shortcuts/.deepseek-key
 python3 shortcuts/build-deepseek-translate.py --sign
 ```
 
-带真实 Key 的产物会输出到 `shortcuts/deepseek-translate.local.shortcut`（同样已 gitignore，不会进仓库），导入这个文件就行；`--api-key sk-xxx` 和 `DEEPSEEK_API_KEY` 环境变量也可以。
+带真实 Key 的产物会输出到 `shortcuts/Fan-DeepSeek 翻译.local.shortcut`（同样已 gitignore，不会进仓库），导入这个文件就行；`--api-key sk-xxx` 和 `DEEPSEEK_API_KEY` 环境变量也可以。
 
 ---
 
@@ -64,8 +64,8 @@ violentmonkey-script/
 │   ├── db-vr.user.js                    # DB VR 筛选脚本
 │   └── youpu.user.js                    # 有谱伴奏助手脚本
 ├── shortcuts/                            # Apple 快捷指令目录
-│   ├── deepseek-translate.shortcut      # 可直接导入的签名文件
-│   ├── deepseek-translate.unsigned.shortcut # 未签名源文件
+│   ├── Fan-DeepSeek 翻译.shortcut      # 可直接导入的签名文件（文件名即快捷指令名）
+│   ├── Fan-DeepSeek 翻译.unsigned.shortcut # 未签名源文件
 │   └── build-deepseek-translate.py      # 快捷指令生成脚本
 ├── README.md                             # 项目说明与一键安装索引
 ├── AGENTS.md                             # AI 协作规范与设计约束

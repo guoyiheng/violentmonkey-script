@@ -35,10 +35,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 LOCAL_KEY_FILE = ROOT / ".deepseek-key"
-UNSIGNED = ROOT / "deepseek-translate.unsigned.shortcut"
-SIGNED = ROOT / "deepseek-translate.shortcut"
-
-SHORTCUT_NAME = "DeepSeek 翻译"
+SHORTCUT_NAME = "Fan-DeepSeek 翻译"
+UNSIGNED = ROOT / f"{SHORTCUT_NAME}.unsigned.shortcut"
+SIGNED = ROOT / f"{SHORTCUT_NAME}.shortcut"
+VERSION = "0.0.1"
+RELEASED = "2026-10-12"
 # 图标: globe（官方同义词中对应 translate）+ Navy
 ICON_GLYPH = 59412
 ICON_COLOR = 946986751
@@ -208,7 +209,8 @@ def build_actions(api_key: str) -> list[dict]:
 
     actions: list[dict] = [
         comment(
-            "DeepSeek 中英互译：运行后输入要翻译的文字，中文译成英文，英文译成中文。\n"
+            f"{SHORTCUT_NAME} v{VERSION}（{RELEASED}）\n"
+            "运行后输入要翻译的文字：中文译成英文，英文译成中文。\n"
             "首次使用请把下面「API Key」文本换成自己的密钥"
             "（https://platform.deepseek.com/api_keys）。"
             "接口地址与模型默认使用 DeepSeek，换成其它 OpenAI 兼容服务时一并修改即可。"
@@ -344,8 +346,8 @@ def main() -> int:
 
     api_key = resolve_api_key(args.api_key)
     if api_key != DEFAULT_API_KEY:
-        unsigned_path = ROOT / "deepseek-translate.local.unsigned.shortcut"
-        signed_path = ROOT / "deepseek-translate.local.shortcut"
+        unsigned_path = ROOT / f"{SHORTCUT_NAME}.local.unsigned.shortcut"
+        signed_path = ROOT / f"{SHORTCUT_NAME}.local.shortcut"
     else:
         unsigned_path, signed_path = UNSIGNED, SIGNED
 
