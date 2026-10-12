@@ -1,10 +1,9 @@
 // ==UserScript==
 // @name         qBittorrent 外部搜索按钮
 // @namespace    https://github.com/yiheng/violentmonkey-script
-// @version      1.0.3
-// @description  在未完成的 qBittorrent 任务行中添加 JavDB 和无钱搜搜索按钮
+// @version      1.0.4
+// @description  在未完成的 qBittorrent 任务行中添加 JavDB 和 OpenBT 搜索按钮
 // @match        http://192.168.31.155:8085/*
-// @match        https://wuqianso.org/*
 // @icon         https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-search-icon.svg
 // @downloadURL  https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js
 // @updateURL    https://raw.githubusercontent.com/guoyiheng/violentmonkey-script/main/scripts/qbittorrent-external-search.user.js
@@ -16,48 +15,6 @@
 
 (function () {
     "use strict";
-
-    // 无钱搜需要先通过首页建立 Cloudflare Cookie，再提交首页自带的搜索表单。
-    // 使用 hash 传递关键词，不会把关键词提前作为 /search 的直达请求发送出去。
-    if (location.hostname === "wuqianso.org") {
-        const marker = "#qb-search=";
-        if (!location.hash.startsWith(marker))
-            return;
-
-        let keyword = "";
-        try {
-            keyword = decodeURIComponent(location.hash.slice(marker.length));
-        }
-        catch (_) {
-            return;
-        }
-        if (!keyword)
-            return;
-
-        const submitSearch = () => {
-            const form = document.querySelector("#search-form");
-            const input = form?.querySelector('input[name="keyword"]');
-            if (!form || !input)
-                return false;
-
-            input.value = keyword;
-            if (typeof form.requestSubmit === "function")
-                form.requestSubmit();
-            else
-                form.submit();
-            return true;
-        };
-
-        if (submitSearch())
-            return;
-
-        const timer = window.setInterval(() => {
-            if (submitSearch())
-                window.clearInterval(timer);
-        }, 500);
-        window.setTimeout(() => window.clearInterval(timer), 30000);
-        return;
-    }
 
     if (location.hostname !== "192.168.31.155")
         return;
@@ -146,34 +103,37 @@
         return match ? `${match[1].toUpperCase()}-${match[2]}` : cleaned;
     }
 
-    function getWuqianKeyword(name) {
-        // 两个站点默认使用同一个番号；如果名称不是番号格式，则退回完整名称。
-        return getJavDbKeyword(name);
-    }
+    const SEARCH_ENGINES = {
+        javdb: {
+            label: "JavDB",
+            title: "在 JavDB 中搜索",
+            url: (keyword) => `https://javdb.com/search?q=${encodeURIComponent(keyword)}&f=all`
+        },
+        openbt: {
+            label: "OpenBT",
+            title: "在 OpenBT 中搜索",
+            url: (keyword) => `https://openbt.cc/zh-cn/search?q=${encodeURIComponent(keyword)}`
+        }
+    };
 
     function openSearch(type, name) {
-        const keyword = type === "javdb" ? getJavDbKeyword(name) : getWuqianKeyword(name);
+        const engine = SEARCH_ENGINES[type];
+        if (!engine)
+            return;
+
+        // 两个站点默认使用同一个番号；如果名称不是番号格式，则退回完整名称。
+        const keyword = getJavDbKeyword(name);
         if (!keyword)
             return;
 
-        const url = type === "javdb"
-            ? `https://javdb.com/search?q=${encodeURIComponent(keyword)}&f=all`
-            : `https://wuqianso.org/search?keyword=${encodeURIComponent(keyword)}`;
-
-        // 无钱搜由 Cloudflare 保护，直接从新标签页打开 /search 容易被判定为
-        // 非浏览器请求并跳回首页。先打开首页建立站点 Cookie，再由同一页面跳转搜索。
-        if (type === "wuqian") {
-            window.open(`https://wuqianso.org/#qb-search=${encodeURIComponent(keyword)}`, "_blank");
-            return;
-        }
-        window.open(url, "_blank", "noopener");
+        window.open(engine.url(keyword), "_blank", "noopener");
     }
 
     function createButton(label, type, name) {
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = label;
-        button.title = type === "javdb" ? "在 JavDB 中搜索" : "在无钱搜中搜索";
+        button.title = SEARCH_ENGINES[type]?.title || label;
         for (const eventType of ["mousedown", "pointerdown", "touchstart", "dblclick", "keydown"])
             button.addEventListener(eventType, (event) => event.stopPropagation());
         button.addEventListener("click", (event) => {
@@ -203,8 +163,8 @@
 
         const buttons = document.createElement("span");
         buttons.className = "qb-external-search-buttons";
-        buttons.append(createButton("JavDB", "javdb", name));
-        buttons.append(createButton("无钱搜", "wuqian", name));
+        for (const [type, engine] of Object.entries(SEARCH_ENGINES))
+            buttons.append(createButton(engine.label, type, name));
         cell.append(buttons);
     }
 
