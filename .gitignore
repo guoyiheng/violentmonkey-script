@@ -9,3 +9,6 @@ node_modules/
 __pycache__/
 *.py[cod]
 .alma-snapshots
+# Apple 快捷指令：本地 API Key 与含密钥的构建产物
+shortcuts/.deepseek-key
+shortcuts/*.local.shortcut

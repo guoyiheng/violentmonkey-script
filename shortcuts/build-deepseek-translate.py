@@ -2,18 +2,23 @@
 """构建「DeepSeek 翻译」快捷指令（.shortcut）。
 
 用法:
-    python3 shortcuts/build-deepseek-translate.py            # 生成未签名文件
-    python3 shortcuts/build-deepseek-translate.py --sign     # 生成并调用 shortcuts sign 签名
+    python3 shortcuts/build-deepseek-translate.py                      # 生成占位符版本（可提交仓库）
+    python3 shortcuts/build-deepseek-translate.py --sign               # 生成并调用 shortcuts sign 签名
+    python3 shortcuts/build-deepseek-translate.py --sign --api-key sk-xxx
 
 说明:
     导入快捷指令时会直接询问 API Key / 接口地址 / 模型，默认值即 DeepSeek，可以当场改成其它
     OpenAI 兼容服务；导入后在快捷指令里也能随时修改这三个文本动作，或改这里再重新生成。
+
+    API Key 的取用顺序: --api-key > 环境变量 DEEPSEEK_API_KEY > shortcuts/.deepseek-key（已 gitignore）。
+    只要取到了真实 Key，产物会写成 *.local.shortcut，以免密钥被误提交。
     签名后的文件在 iOS/macOS 上双击即可导入（iOS 需在设置中允许「不受信任的快捷指令」）。
 """
 
 from __future__ import annotations
 
 import argparse
+import os
 import plistlib
 import subprocess
 import sys
@@ -21,6 +26,7 @@ import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+LOCAL_KEY_FILE = ROOT / ".deepseek-key"
 UNSIGNED = ROOT / "deepseek-translate.unsigned.shortcut"
 SIGNED = ROOT / "deepseek-translate.shortcut"
 
@@ -146,7 +152,16 @@ def get_value(action_id: str, key: str, source: dict, output_name: str | None = 
 # ---------------------------------------------------------------------------
 # 动作定义
 # ---------------------------------------------------------------------------
-def build_actions() -> list[dict]:
+def resolve_api_key(cli_key: str | None) -> str:
+    """--api-key > DEEPSEEK_API_KEY > shortcuts/.deepseek-key > 占位符。"""
+    for candidate in (cli_key, os.environ.get("DEEPSEEK_API_KEY"),
+                      LOCAL_KEY_FILE.read_text().strip() if LOCAL_KEY_FILE.exists() else None):
+        if candidate and candidate.strip():
+            return candidate.strip()
+    return DEFAULT_API_KEY
+
+
+def build_actions(api_key: str) -> list[dict]:
     key_id, url_id, model_id = new_id(), new_id(), new_id()
     ask_id = new_id()
     escape_nl, escape_bs, escape_quote = new_id(), new_id(), new_id()
@@ -163,7 +178,7 @@ def build_actions() -> list[dict]:
         "接口地址与模型默认使用 DeepSeek，换成其它 OpenAI 兼容服务时一并修改即可。"
     ))
 
-    actions.append(text_action(DEFAULT_API_KEY, key_id, "API Key"))
+    actions.append(text_action(api_key, key_id, "API Key"))
     actions.append(text_action(DEFAULT_API_URL, url_id, "接口地址"))
     actions.append(text_action(DEFAULT_MODEL, model_id, "模型"))
 
@@ -284,8 +299,8 @@ def build_actions() -> list[dict]:
     return actions
 
 
-def build_shortcut() -> dict:
-    actions = build_actions()
+def build_shortcut(api_key: str) -> dict:
+    actions = build_actions(api_key)
 
     # 导入时直接询问三个配置项，默认值即 DeepSeek；确认后仍可在快捷指令里随时修改。
     config = {
@@ -325,11 +340,22 @@ def build_shortcut() -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="生成 DeepSeek 翻译快捷指令")
     parser.add_argument("--sign", action="store_true", help="调用 shortcuts sign 输出可导入的签名文件")
+    parser.add_argument("--api-key", help="DeepSeek API Key，会输出到不提交仓库的 *.local.shortcut")
     args = parser.parse_args()
 
-    with UNSIGNED.open("wb") as fp:
-        plistlib.dump(build_shortcut(), fp)
-    print(f"已生成 {UNSIGNED.relative_to(ROOT.parent)}")
+    api_key = resolve_api_key(args.api_key)
+    has_real_key = api_key != DEFAULT_API_KEY
+    if has_real_key:
+        unsigned_path = ROOT / "deepseek-translate.local.unsigned.shortcut"
+        signed_path = ROOT / "deepseek-translate.local.shortcut"
+    else:
+        unsigned_path, signed_path = UNSIGNED, SIGNED
+
+    with unsigned_path.open("wb") as fp:
+        plistlib.dump(build_shortcut(api_key), fp)
+    print(f"已生成 {unsigned_path.relative_to(ROOT.parent)}")
+    if has_real_key:
+        print("  ↑ 含真实 API Key，已在 .gitignore 中忽略，请勿提交")
 
     if not args.sign:
         return 0
@@ -339,7 +365,8 @@ def main() -> int:
         return 1
 
     result = subprocess.run(
-        ["shortcuts", "sign", "--mode", "anyone", "--input", str(UNSIGNED), "--output", str(SIGNED)],
+        ["shortcuts", "sign", "--mode", "anyone", "--input", str(unsigned_path),
+         "--output", str(signed_path)],
         capture_output=True,
         text=True,
     )
@@ -347,7 +374,7 @@ def main() -> int:
         print(result.stdout, result.stderr, file=sys.stderr)
         return result.returncode
 
-    print(f"已生成签名文件 {SIGNED.relative_to(ROOT.parent)}")
+    print(f"已生成签名文件 {signed_path.relative_to(ROOT.parent)}")
     return 0
 
 

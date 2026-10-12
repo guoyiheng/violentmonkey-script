@@ -37,6 +37,15 @@
 
 改动后重新生成：`python3 shortcuts/build-deepseek-translate.py --sign`。
 
+想把 Key 固定下来、以后每次导入不用重填：把密钥写进 `shortcuts/.deepseek-key`（已在 `.gitignore` 中）再重新生成即可：
+
+```bash
+printf '%s' 'sk-你的key' > shortcuts/.deepseek-key
+python3 shortcuts/build-deepseek-translate.py --sign
+```
+
+带真实 Key 的产物会输出到 `shortcuts/deepseek-translate.local.shortcut`（同样已 gitignore，不会进仓库），导入这个文件就行；`--api-key sk-xxx` 和 `DEEPSEEK_API_KEY` 环境变量也可以。
+
 ---
 
 ## 项目目录结构
